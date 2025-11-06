@@ -1,0 +1,3728 @@
+{
+  "steps": [
+    {
+      "step_type": "session_start",
+      "timestamp": "2025-11-06T20:42:56.731212",
+      "data": {
+        "session_id": "20251106_204256",
+        "timestamp": "2025-11-06T20:42:56.731209",
+        "agent_model": "gpt-4o-mini",
+        "strategic_framework": "Entman Framing Theory"
+      }
+    },
+    {
+      "step_type": "batch_analysis_start",
+      "timestamp": "2025-11-06T20:42:56.731695",
+      "data": {
+        "total_articles": 9,
+        "article_titles": [
+          "NUS and NTU cast wider net for students through aptitude-bas...",
+          "More fresh university grads found full- time jobs last year,...",
+          "SUTD forms global alliance with 12 institutions to enhance d...",
+          "'First 2 years of university have been very dry': Undergradu...",
+          "SMU graduates to get transcript of co- curricular activities...",
+          "Universities in Singapore focusing research efforts on solvi...",
+          "NUS grad rejected Google job and now builds floating gardens",
+          "NTU keeps top spot on best young university ranking, up to 2...",
+          "New SUSS centre launched to boost non-profit sector through ..."
+        ],
+        "initial_codebook_stats": {
+          "total_codes": 4,
+          "function_distribution": {
+            "PROBLEM_DEFINITION": 1,
+            "CAUSAL_ATTRIBUTION": 1,
+            "MORAL_EVALUATION": 1,
+            "TREATMENT_ADVOCACY": 1
+          },
+          "total_evidence_quotes": 16,
+          "codes_with_embeddings": 4,
+          "next_available_id": 5
+        },
+        "timestamp": "2025-11-06T20:42:56.731682"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:42:56.731866",
+      "data": {
+        "article_number": 1,
+        "total_articles": 9,
+        "article_id": 2,
+        "article_title": "NUS and NTU cast wider net for students through aptitude-based admissions",
+        "timestamp": "2025-11-06T20:42:56.731860"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:42:56.732024",
+      "data": {
+        "article_id": 2,
+        "article_title": "NUS and NTU cast wider net for students through aptitude-based admissions",
+        "article_length": 5914,
+        "timestamp": "2025-11-06T20:42:56.732013"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:42:56.732220",
+      "data": {
+        "article_id": 2,
+        "prompt_length": 6584,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:42:56.732217"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:42:56.732375",
+      "data": {
+        "article_id": 2,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:42:56.732374"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:42:57.285897",
+      "data": {
+        "article_id": 2,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:42:57.285876"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:05.387322",
+      "data": {
+        "article_id": 2,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:05.387303"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:05.388206",
+      "data": {
+        "article_id": 2,
+        "code_index": 0,
+        "code_name": "Aptitude-Based Admissions",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.388201"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:05.388979",
+      "data": {
+        "article_id": 2,
+        "code_index": 1,
+        "code_name": "Broader Criteria for Evaluation",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.388975"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:05.389457",
+      "data": {
+        "article_id": 2,
+        "code_index": 2,
+        "code_name": "Value of Diversity and Inclusion",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.389453"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:05.389995",
+      "data": {
+        "article_id": 2,
+        "code_index": 3,
+        "code_name": "Holistic Admissions Approach",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.389991"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:05.390577",
+      "data": {
+        "article_id": 2,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:42:56.732013",
+        "end_time": "2025-11-06T20:43:05.390569",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:05.390573"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:05.391172",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:05.391163"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:05.391733",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Aptitude-Based Admissions",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.391729"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:05.392297",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Aptitude-Based Admissions",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:05.392293"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:05.392805",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:05.392802"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:05.393288",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Broader Criteria for Evaluation",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.393284"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:05.393786",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Broader Criteria for Evaluation",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:05.393783"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:05.394298",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:05.394295"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:05.394825",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Diversity and Inclusion",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.394822"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:05.395360",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Diversity and Inclusion",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:05.395357"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:05.395902",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:05.395899"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:05.396510",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Holistic Admissions Approach",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:05.396507"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:05.397388",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Holistic Admissions Approach",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:05.397360"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:05.398464",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:05.398456"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:05.399157",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:05.391163",
+        "end_time": "2025-11-06T20:43:05.399151",
+        "timestamp": "2025-11-06T20:43:05.399154"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:05.399803",
+      "data": {
+        "article_number": 1,
+        "article_id": 2,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:42:56.731860",
+        "end_time": "2025-11-06T20:43:05.399795",
+        "timestamp": "2025-11-06T20:43:05.399799"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:05.400477",
+      "data": {
+        "article_number": 2,
+        "total_articles": 9,
+        "article_id": 3,
+        "article_title": "More fresh university grads found full- time jobs last year, salaries inching up",
+        "timestamp": "2025-11-06T20:43:05.400462"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:05.401093",
+      "data": {
+        "article_id": 3,
+        "article_title": "More fresh university grads found full- time jobs last year, salaries inching up",
+        "article_length": 4193,
+        "timestamp": "2025-11-06T20:43:05.401085"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:05.401721",
+      "data": {
+        "article_id": 3,
+        "prompt_length": 4870,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:05.401718"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:05.402387",
+      "data": {
+        "article_id": 3,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:05.402385"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:05.792486",
+      "data": {
+        "article_id": 3,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:05.792461"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:13.679671",
+      "data": {
+        "article_id": 3,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:13.679632"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:13.681790",
+      "data": {
+        "article_id": 3,
+        "code_index": 0,
+        "code_name": "Increased Employment Rates",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.681778"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:13.683316",
+      "data": {
+        "article_id": 3,
+        "code_index": 1,
+        "code_name": "Economic Recovery Post-COVID",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.683309"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:13.684696",
+      "data": {
+        "article_id": 3,
+        "code_index": 2,
+        "code_name": "Positive Outlook on Graduate Employment",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.684691"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:13.686125",
+      "data": {
+        "article_id": 3,
+        "code_index": 3,
+        "code_name": "Support for Graduates",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.686119"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:13.687528",
+      "data": {
+        "article_id": 3,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:05.401085",
+        "end_time": "2025-11-06T20:43:13.687517",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:13.687524"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:13.688790",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:13.688780"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:13.689892",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Increased Employment Rates",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.689887"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:13.691304",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Increased Employment Rates",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:13.691290"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:13.693008",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:13.693001"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:13.694621",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Economic Recovery Post-COVID",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.694609"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:13.696074",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Economic Recovery Post-COVID",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:13.696068"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:13.697765",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:13.697755"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:13.699273",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Positive Outlook on Graduate Employment",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.699264"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:13.700327",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Positive Outlook on Graduate Employment",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:13.700323"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:13.701339",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:13.701336"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:13.702355",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Support for Graduates",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:13.702351"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:13.703440",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Support for Graduates",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:13.703437"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:13.704520",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:13.704516"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:13.705453",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:13.688780",
+        "end_time": "2025-11-06T20:43:13.705447",
+        "timestamp": "2025-11-06T20:43:13.705450"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:13.706387",
+      "data": {
+        "article_number": 2,
+        "article_id": 3,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:05.400462",
+        "end_time": "2025-11-06T20:43:13.706382",
+        "timestamp": "2025-11-06T20:43:13.706384"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:13.707302",
+      "data": {
+        "article_number": 3,
+        "total_articles": 9,
+        "article_id": 4,
+        "article_title": "SUTD forms global alliance with 12 institutions to enhance design education",
+        "timestamp": "2025-11-06T20:43:13.707288"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:13.708206",
+      "data": {
+        "article_id": 4,
+        "article_title": "SUTD forms global alliance with 12 institutions to enhance design education",
+        "article_length": 3238,
+        "timestamp": "2025-11-06T20:43:13.708202"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:13.709121",
+      "data": {
+        "article_id": 4,
+        "prompt_length": 3910,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:13.709119"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:13.710036",
+      "data": {
+        "article_id": 4,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:13.710033"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:14.171527",
+      "data": {
+        "article_id": 4,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:14.171498"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:20.334662",
+      "data": {
+        "article_id": 4,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:20.334614"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:20.339839",
+      "data": {
+        "article_id": 4,
+        "code_index": 0,
+        "code_name": "Enhancing Design Education",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.339824"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:20.342252",
+      "data": {
+        "article_id": 4,
+        "code_index": 1,
+        "code_name": "Global Collaboration",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.342239"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:20.343976",
+      "data": {
+        "article_id": 4,
+        "code_index": 2,
+        "code_name": "Importance of Design Thinking",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.343970"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:20.345465",
+      "data": {
+        "article_id": 4,
+        "code_index": 3,
+        "code_name": "Redefining Role of Design",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.345460"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:20.346970",
+      "data": {
+        "article_id": 4,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:13.708202",
+        "end_time": "2025-11-06T20:43:20.346963",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:20.346967"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:20.348490",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:20.348486"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:20.349795",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Enhancing Design Education",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.349791"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:20.351041",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Enhancing Design Education",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:20.351037"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:20.352293",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:20.352290"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:20.353532",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Global Collaboration",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.353529"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:20.355153",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Global Collaboration",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:20.355142"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:20.356649",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:20.356645"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:20.358203",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Importance of Design Thinking",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.358194"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:20.359493",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Importance of Design Thinking",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:20.359489"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:20.360726",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:20.360722"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:20.361920",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Redefining Role of Design",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:20.361917"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:20.363003",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Redefining Role of Design",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:20.363001"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:20.364043",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:20.364041"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:20.365082",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:20.348486",
+        "end_time": "2025-11-06T20:43:20.365063",
+        "timestamp": "2025-11-06T20:43:20.365065"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:20.366139",
+      "data": {
+        "article_number": 3,
+        "article_id": 4,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:13.707288",
+        "end_time": "2025-11-06T20:43:20.366135",
+        "timestamp": "2025-11-06T20:43:20.366137"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:20.367311",
+      "data": {
+        "article_number": 4,
+        "total_articles": 9,
+        "article_id": 5,
+        "article_title": "'First 2 years of university have been very dry': Undergraduate who enrolled during pandemic",
+        "timestamp": "2025-11-06T20:43:20.367299"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:20.368417",
+      "data": {
+        "article_id": 5,
+        "article_title": "'First 2 years of university have been very dry': Undergraduate who enrolled during pandemic",
+        "article_length": 3093,
+        "timestamp": "2025-11-06T20:43:20.368411"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:20.369580",
+      "data": {
+        "article_id": 5,
+        "prompt_length": 3782,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:20.369578"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:20.370667",
+      "data": {
+        "article_id": 5,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:20.370665"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:20.742969",
+      "data": {
+        "article_id": 5,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:20.742944"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:29.554051",
+      "data": {
+        "article_id": 5,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:29.554031"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:29.557963",
+      "data": {
+        "article_id": 5,
+        "code_index": 0,
+        "code_name": "Dry University Experience",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.557953"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:29.559861",
+      "data": {
+        "article_id": 5,
+        "code_index": 1,
+        "code_name": "Impact of Pandemic Restrictions",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.559854"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:29.561956",
+      "data": {
+        "article_id": 5,
+        "code_index": 2,
+        "code_name": "Value of Social Interaction",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.561950"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:29.564317",
+      "data": {
+        "article_id": 5,
+        "code_index": 3,
+        "code_name": "Optimism for Future Engagement",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.564309"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:29.567558",
+      "data": {
+        "article_id": 5,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:20.368411",
+        "end_time": "2025-11-06T20:43:29.567539",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:29.567553"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:29.568721",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:29.568719"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:29.570678",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Dry University Experience",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.570672"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:29.572772",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Dry University Experience",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:29.572767"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:29.575062",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:29.575054"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:29.577198",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Impact of Pandemic Restrictions",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.577193"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:29.579336",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Impact of Pandemic Restrictions",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:29.579332"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:29.580843",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:29.580839"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:29.582327",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Social Interaction",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.582323"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:29.583797",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Social Interaction",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:29.583794"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:29.585269",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:29.585267"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:29.586849",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Optimism for Future Engagement",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:29.586845"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:29.588227",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Optimism for Future Engagement",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:29.588224"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:29.589557",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:29.589555"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:29.590888",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:29.568719",
+        "end_time": "2025-11-06T20:43:29.590884",
+        "timestamp": "2025-11-06T20:43:29.590886"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:29.592233",
+      "data": {
+        "article_number": 4,
+        "article_id": 5,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:20.367299",
+        "end_time": "2025-11-06T20:43:29.592229",
+        "timestamp": "2025-11-06T20:43:29.592231"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:29.593593",
+      "data": {
+        "article_number": 5,
+        "total_articles": 9,
+        "article_id": 6,
+        "article_title": "SMU graduates to get transcript of co- curricular activities and skills learnt, starting in 2025",
+        "timestamp": "2025-11-06T20:43:29.593580"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:29.594910",
+      "data": {
+        "article_id": 6,
+        "article_title": "SMU graduates to get transcript of co- curricular activities and skills learnt, starting in 2025",
+        "article_length": 5278,
+        "timestamp": "2025-11-06T20:43:29.594907"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:29.596160",
+      "data": {
+        "article_id": 6,
+        "prompt_length": 5971,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:29.596158"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:29.597411",
+      "data": {
+        "article_id": 6,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:29.597409"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:30.050016",
+      "data": {
+        "article_id": 6,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:30.049991"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:39.687489",
+      "data": {
+        "article_id": 6,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:39.687448"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:39.692106",
+      "data": {
+        "article_id": 6,
+        "code_index": 0,
+        "code_name": "Importance of Co-Curricular Activities",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:39.692091"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:39.695482",
+      "data": {
+        "article_id": 6,
+        "code_index": 1,
+        "code_name": "Lack of Formal Recognition",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.695473"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:39.698081",
+      "data": {
+        "article_id": 6,
+        "code_index": 2,
+        "code_name": "Valuing Holistic Education",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.698077"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:39.700809",
+      "data": {
+        "article_id": 6,
+        "code_index": 3,
+        "code_name": "Implementation of Co-Curricular Transcript",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.700798"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:39.703537",
+      "data": {
+        "article_id": 6,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:29.594907",
+        "end_time": "2025-11-06T20:43:39.703527",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:39.703534"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:39.706069",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:39.706066"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:39.708395",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Importance of Co-Curricular Activities",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:39.708391"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:39.710657",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Importance of Co-Curricular Activities",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:39.710648"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:39.712943",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:39.712938"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:39.714854",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Lack of Formal Recognition",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.714850"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:39.716674",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Lack of Formal Recognition",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:39.716671"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:39.718510",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:39.718507"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:39.720416",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Valuing Holistic Education",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.720412"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:39.722460",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Valuing Holistic Education",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:39.722454"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:39.724157",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:39.724154"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:39.725789",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Implementation of Co-Curricular Transcript",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:39.725786"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:39.727421",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Implementation of Co-Curricular Transcript",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:39.727418"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:39.729120",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:39.729117"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:39.730581",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:39.706066",
+        "end_time": "2025-11-06T20:43:39.730577",
+        "timestamp": "2025-11-06T20:43:39.730579"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:39.732043",
+      "data": {
+        "article_number": 5,
+        "article_id": 6,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:29.593580",
+        "end_time": "2025-11-06T20:43:39.732039",
+        "timestamp": "2025-11-06T20:43:39.732041"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:39.733546",
+      "data": {
+        "article_number": 6,
+        "total_articles": 9,
+        "article_id": 7,
+        "article_title": "Universities in Singapore focusing research efforts on solving global post- pandemic problems",
+        "timestamp": "2025-11-06T20:43:39.733536"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:39.735054",
+      "data": {
+        "article_id": 7,
+        "article_title": "Universities in Singapore focusing research efforts on solving global post- pandemic problems",
+        "article_length": 4514,
+        "timestamp": "2025-11-06T20:43:39.735046"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:39.736753",
+      "data": {
+        "article_id": 7,
+        "prompt_length": 5204,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:39.736748"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:39.738844",
+      "data": {
+        "article_id": 7,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:39.738841"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:40.180368",
+      "data": {
+        "article_id": 7,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:40.180341"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:48.597032",
+      "data": {
+        "article_id": 7,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:48.596992"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:48.601452",
+      "data": {
+        "article_id": 7,
+        "code_index": 0,
+        "code_name": "Global Post-Pandemic Issues",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.601440"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:48.605174",
+      "data": {
+        "article_id": 7,
+        "code_index": 1,
+        "code_name": "Need for Interdisciplinary Research",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.605162"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:48.608323",
+      "data": {
+        "article_id": 7,
+        "code_index": 2,
+        "code_name": "Value of Innovative Solutions",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.608318"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:48.611080",
+      "data": {
+        "article_id": 7,
+        "code_index": 3,
+        "code_name": "Investment in Interdisciplinary Studies",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.611076"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:48.613747",
+      "data": {
+        "article_id": 7,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:39.735046",
+        "end_time": "2025-11-06T20:43:48.613742",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:48.613745"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:48.616168",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:48.616165"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:48.618291",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Global Post-Pandemic Issues",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.618287"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:48.620875",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Global Post-Pandemic Issues",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:48.620866"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:48.623619",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:48.623615"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:48.625796",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Need for Interdisciplinary Research",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.625789"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:48.628036",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Need for Interdisciplinary Research",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:48.628033"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:48.629905",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:48.629902"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:48.631736",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Innovative Solutions",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.631734"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:48.633414",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Innovative Solutions",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:48.633412"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:48.635121",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:48.635119"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:48.636914",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Investment in Interdisciplinary Studies",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 1,
+        "timestamp": "2025-11-06T20:43:48.636910"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:48.638664",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Investment in Interdisciplinary Studies",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:48.638661"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:48.640311",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:48.640308"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:48.641908",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:48.616165",
+        "end_time": "2025-11-06T20:43:48.641905",
+        "timestamp": "2025-11-06T20:43:48.641907"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:48.643606",
+      "data": {
+        "article_number": 6,
+        "article_id": 7,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:39.733536",
+        "end_time": "2025-11-06T20:43:48.643603",
+        "timestamp": "2025-11-06T20:43:48.643604"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:48.645236",
+      "data": {
+        "article_number": 7,
+        "total_articles": 9,
+        "article_id": 8,
+        "article_title": "NUS grad rejected Google job and now builds floating gardens",
+        "timestamp": "2025-11-06T20:43:48.645225"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:48.646745",
+      "data": {
+        "article_id": 8,
+        "article_title": "NUS grad rejected Google job and now builds floating gardens",
+        "article_length": 3620,
+        "timestamp": "2025-11-06T20:43:48.646743"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:48.648284",
+      "data": {
+        "article_id": 8,
+        "prompt_length": 4277,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:48.648282"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:48.649917",
+      "data": {
+        "article_id": 8,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:48.649916"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:43:48.986792",
+      "data": {
+        "article_id": 8,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:43:48.986636"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:43:59.149916",
+      "data": {
+        "article_id": 8,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:59.149877"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:59.156969",
+      "data": {
+        "article_id": 8,
+        "code_index": 0,
+        "code_name": "Innovation for Social Good",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.156952"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:59.161312",
+      "data": {
+        "article_id": 8,
+        "code_index": 1,
+        "code_name": "Regulatory Barriers",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.161305"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:59.165380",
+      "data": {
+        "article_id": 8,
+        "code_index": 2,
+        "code_name": "Value of Innovation and Community Impact",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.165369"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:43:59.169184",
+      "data": {
+        "article_id": 8,
+        "code_index": 3,
+        "code_name": "Call for Collaboration",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.169175"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:43:59.172774",
+      "data": {
+        "article_id": 8,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:48.646743",
+        "end_time": "2025-11-06T20:43:59.172767",
+        "success": true,
+        "timestamp": "2025-11-06T20:43:59.172771"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:43:59.175703",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:43:59.175700"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:59.178412",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Innovation for Social Good",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.178409"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:59.181101",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Innovation for Social Good",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:59.181093"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:59.183731",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:59.183727"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:59.186211",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Regulatory Barriers",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.186204"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:59.188490",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Regulatory Barriers",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:59.188486"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:59.191026",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:59.191022"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:59.193200",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Innovation and Community Impact",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.193197"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:59.195179",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Innovation and Community Impact",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:59.195176"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:59.197156",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:59.197154"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:43:59.199131",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Call for Collaboration",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:43:59.199128"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:43:59.201109",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Call for Collaboration",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:43:59.201107"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:43:59.202991",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:43:59.202988"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:43:59.204921",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:59.175700",
+        "end_time": "2025-11-06T20:43:59.204918",
+        "timestamp": "2025-11-06T20:43:59.204920"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:43:59.206789",
+      "data": {
+        "article_number": 7,
+        "article_id": 8,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:48.645225",
+        "end_time": "2025-11-06T20:43:59.206786",
+        "timestamp": "2025-11-06T20:43:59.206787"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:43:59.208530",
+      "data": {
+        "article_number": 8,
+        "total_articles": 9,
+        "article_id": 9,
+        "article_title": "NTU keeps top spot on best young university ranking, up to 2nd on another list",
+        "timestamp": "2025-11-06T20:43:59.208522"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:43:59.210278",
+      "data": {
+        "article_id": 9,
+        "article_title": "NTU keeps top spot on best young university ranking, up to 2nd on another list",
+        "article_length": 2396,
+        "timestamp": "2025-11-06T20:43:59.210275"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:43:59.212030",
+      "data": {
+        "article_id": 9,
+        "prompt_length": 3071,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:43:59.212028"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:43:59.213792",
+      "data": {
+        "article_id": 9,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:43:59.213790"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:44:00.247082",
+      "data": {
+        "article_id": 9,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:44:00.247077"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:44:10.625059",
+      "data": {
+        "article_id": 9,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:44:10.625015"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:10.631245",
+      "data": {
+        "article_id": 9,
+        "code_index": 0,
+        "code_name": "NTU's Ranking Success",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.631232"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:10.636063",
+      "data": {
+        "article_id": 9,
+        "code_index": 1,
+        "code_name": "Impact of the Pandemic",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.636050"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:10.640927",
+      "data": {
+        "article_id": 9,
+        "code_index": 2,
+        "code_name": "Value of Universities",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.640907"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:10.645085",
+      "data": {
+        "article_id": 9,
+        "code_index": 3,
+        "code_name": "Support for Higher Education",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.645080"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:44:10.648492",
+      "data": {
+        "article_id": 9,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:43:59.210275",
+        "end_time": "2025-11-06T20:44:10.648486",
+        "success": true,
+        "timestamp": "2025-11-06T20:44:10.648489"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:44:10.651719",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:44:10.651717"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:10.654533",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "NTU's Ranking Success",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.654530"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:10.657776",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "NTU's Ranking Success",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:10.657768"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:10.660649",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:10.660644"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:10.663130",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Impact of the Pandemic",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.663127"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:10.665596",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Impact of the Pandemic",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:10.665594"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:10.667957",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:10.667955"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:10.670384",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Universities",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.670379"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:10.672664",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Value of Universities",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:10.672661"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:10.674995",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:10.674993"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:10.677061",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Support for Higher Education",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:10.677059"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:10.679124",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Support for Higher Education",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:10.679122"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:10.681169",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:10.681168"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:44:10.683118",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:44:10.651717",
+        "end_time": "2025-11-06T20:44:10.683116",
+        "timestamp": "2025-11-06T20:44:10.683117"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:44:10.685082",
+      "data": {
+        "article_number": 8,
+        "article_id": 9,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:43:59.208522",
+        "end_time": "2025-11-06T20:44:10.685079",
+        "timestamp": "2025-11-06T20:44:10.685080"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:44:10.687039",
+      "data": {
+        "article_number": 9,
+        "total_articles": 9,
+        "article_id": 10,
+        "article_title": "New SUSS centre launched to boost non-profit sector through education and research",
+        "timestamp": "2025-11-06T20:44:10.687030"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:44:10.688890",
+      "data": {
+        "article_id": 10,
+        "article_title": "New SUSS centre launched to boost non-profit sector through education and research",
+        "article_length": 2959,
+        "timestamp": "2025-11-06T20:44:10.688888"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:44:10.690761",
+      "data": {
+        "article_id": 10,
+        "prompt_length": 3638,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:44:10.690760"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:44:10.692944",
+      "data": {
+        "article_id": 10,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:44:10.692939"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:44:11.117781",
+      "data": {
+        "article_id": 10,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:44:11.117759"
+      }
+    },
+    {
+      "step_type": "llm_response_received",
+      "timestamp": "2025-11-06T20:44:26.280817",
+      "data": {
+        "article_id": 10,
+        "response_type": "list",
+        "raw_codes_count": 4,
+        "timestamp": "2025-11-06T20:44:26.280772"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:26.288441",
+      "data": {
+        "article_id": 10,
+        "code_index": 0,
+        "code_name": "Education and Research Enhancement",
+        "code_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.288425"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:26.293640",
+      "data": {
+        "article_id": 10,
+        "code_index": 1,
+        "code_name": "Need for Enhanced Capabilities",
+        "code_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.293630"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:26.298784",
+      "data": {
+        "article_id": 10,
+        "code_index": 2,
+        "code_name": "Importance of Collaboration",
+        "code_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.298774"
+      }
+    },
+    {
+      "step_type": "code_created",
+      "timestamp": "2025-11-06T20:44:26.303041",
+      "data": {
+        "article_id": 10,
+        "code_index": 3,
+        "code_name": "Formation of Centre for Excellence",
+        "code_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.303037"
+      }
+    },
+    {
+      "step_type": "article_analysis_complete",
+      "timestamp": "2025-11-06T20:44:26.306747",
+      "data": {
+        "article_id": 10,
+        "candidate_codes_count": 4,
+        "start_time": "2025-11-06T20:44:10.688888",
+        "end_time": "2025-11-06T20:44:26.306741",
+        "success": true,
+        "timestamp": "2025-11-06T20:44:26.306745"
+      }
+    },
+    {
+      "step_type": "comparison_start",
+      "timestamp": "2025-11-06T20:44:26.310006",
+      "data": {
+        "candidate_codes_count": 4,
+        "existing_codes_count": 4,
+        "timestamp": "2025-11-06T20:44:26.310003"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:26.313111",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Education and Research Enhancement",
+        "candidate_function": "PROBLEM_DEFINITION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.313108"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:26.316759",
+      "data": {
+        "candidate_index": 0,
+        "candidate_name": "Education and Research Enhancement",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:26.316751"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:26.319956",
+      "data": {
+        "candidate_index": 0,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:26.319950"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:26.323203",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Need for Enhanced Capabilities",
+        "candidate_function": "CAUSAL_ATTRIBUTION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.323199"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:26.325912",
+      "data": {
+        "candidate_index": 1,
+        "candidate_name": "Need for Enhanced Capabilities",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:26.325909"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:26.328585",
+      "data": {
+        "candidate_index": 1,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:26.328583"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:26.331113",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Importance of Collaboration",
+        "candidate_function": "MORAL_EVALUATION",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.331110"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:26.333668",
+      "data": {
+        "candidate_index": 2,
+        "candidate_name": "Importance of Collaboration",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:26.333666"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:26.336276",
+      "data": {
+        "candidate_index": 2,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:26.336274"
+      }
+    },
+    {
+      "step_type": "candidate_processing",
+      "timestamp": "2025-11-06T20:44:26.338591",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Formation of Centre for Excellence",
+        "candidate_function": "TREATMENT_ADVOCACY",
+        "evidence_count": 2,
+        "timestamp": "2025-11-06T20:44:26.338589"
+      }
+    },
+    {
+      "step_type": "similarity_search",
+      "timestamp": "2025-11-06T20:44:26.340775",
+      "data": {
+        "candidate_index": 3,
+        "candidate_name": "Formation of Centre for Excellence",
+        "similar_codes_found": 0,
+        "similar_code_names": [],
+        "timestamp": "2025-11-06T20:44:26.340773"
+      }
+    },
+    {
+      "step_type": "operation_created",
+      "timestamp": "2025-11-06T20:44:26.342967",
+      "data": {
+        "candidate_index": 3,
+        "operation_type": "CREATE_CODE",
+        "reason": "no_similar_codes",
+        "confidence": 0.9,
+        "timestamp": "2025-11-06T20:44:26.342965"
+      }
+    },
+    {
+      "step_type": "comparison_complete",
+      "timestamp": "2025-11-06T20:44:26.345292",
+      "data": {
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:44:26.310003",
+        "end_time": "2025-11-06T20:44:26.345289",
+        "timestamp": "2025-11-06T20:44:26.345291"
+      }
+    },
+    {
+      "step_type": "batch_article_complete",
+      "timestamp": "2025-11-06T20:44:26.347725",
+      "data": {
+        "article_number": 9,
+        "article_id": 10,
+        "candidate_codes_count": 4,
+        "operations_generated": 4,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "start_time": "2025-11-06T20:44:10.687030",
+        "end_time": "2025-11-06T20:44:26.347722",
+        "timestamp": "2025-11-06T20:44:26.347723"
+      }
+    },
+    {
+      "step_type": "batch_operations_start",
+      "timestamp": "2025-11-06T20:44:26.350019",
+      "data": {
+        "total_operations": 36,
+        "operation_breakdown": {
+          "CREATE_CODE": 36
+        },
+        "timestamp": "2025-11-06T20:44:26.350017"
+      }
+    },
+    {
+      "step_type": "codebook_update_start",
+      "timestamp": "2025-11-06T20:44:26.352174",
+      "data": {
+        "operations_count": 36,
+        "operation_types": [
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE",
+          "CREATE_CODE"
+        ],
+        "timestamp": "2025-11-06T20:44:26.352167"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.354244",
+      "data": {
+        "operation_index": 0,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.354238"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.356620",
+      "data": {
+        "operation_index": 0,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.356618"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.358791",
+      "data": {
+        "operation_index": 1,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.358789"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.360730",
+      "data": {
+        "operation_index": 1,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.360729"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.362909",
+      "data": {
+        "operation_index": 2,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.362907"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.365650",
+      "data": {
+        "operation_index": 2,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.365648"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.367761",
+      "data": {
+        "operation_index": 3,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.367760"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.370025",
+      "data": {
+        "operation_index": 3,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.370023"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.372045",
+      "data": {
+        "operation_index": 4,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.372043"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.374059",
+      "data": {
+        "operation_index": 4,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.374057"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.376126",
+      "data": {
+        "operation_index": 5,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.376124"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.378258",
+      "data": {
+        "operation_index": 5,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.378257"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.380391",
+      "data": {
+        "operation_index": 6,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.380390"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.382396",
+      "data": {
+        "operation_index": 6,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.382394"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.384490",
+      "data": {
+        "operation_index": 7,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.384489"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.386584",
+      "data": {
+        "operation_index": 7,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.386581"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.388956",
+      "data": {
+        "operation_index": 8,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.388955"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.390822",
+      "data": {
+        "operation_index": 8,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.390820"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.392780",
+      "data": {
+        "operation_index": 9,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.392779"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.394774",
+      "data": {
+        "operation_index": 9,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.394772"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.396691",
+      "data": {
+        "operation_index": 10,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.396690"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.398800",
+      "data": {
+        "operation_index": 10,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.398798"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.400898",
+      "data": {
+        "operation_index": 11,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.400896"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.403288",
+      "data": {
+        "operation_index": 11,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.403286"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.405519",
+      "data": {
+        "operation_index": 12,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.405518"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.407649",
+      "data": {
+        "operation_index": 12,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.407648"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.409739",
+      "data": {
+        "operation_index": 13,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.409738"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.411895",
+      "data": {
+        "operation_index": 13,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.411894"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.413912",
+      "data": {
+        "operation_index": 14,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.413910"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.416145",
+      "data": {
+        "operation_index": 14,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.416144"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.418113",
+      "data": {
+        "operation_index": 15,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.418111"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.420545",
+      "data": {
+        "operation_index": 15,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.420543"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.422871",
+      "data": {
+        "operation_index": 16,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.422870"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.424815",
+      "data": {
+        "operation_index": 16,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.424813"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.426756",
+      "data": {
+        "operation_index": 17,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.426755"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.429121",
+      "data": {
+        "operation_index": 17,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.429120"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.431235",
+      "data": {
+        "operation_index": 18,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.431233"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.433322",
+      "data": {
+        "operation_index": 18,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.433321"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.435497",
+      "data": {
+        "operation_index": 19,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.435496"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.437600",
+      "data": {
+        "operation_index": 19,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.437598"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.440068",
+      "data": {
+        "operation_index": 20,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.440067"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.442057",
+      "data": {
+        "operation_index": 20,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.442055"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.444113",
+      "data": {
+        "operation_index": 21,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.444111"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.446422",
+      "data": {
+        "operation_index": 21,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.446421"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.448707",
+      "data": {
+        "operation_index": 22,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.448706"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.450944",
+      "data": {
+        "operation_index": 22,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.450943"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.453305",
+      "data": {
+        "operation_index": 23,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.453303"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.455371",
+      "data": {
+        "operation_index": 23,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.455369"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.457572",
+      "data": {
+        "operation_index": 24,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.457570"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.459661",
+      "data": {
+        "operation_index": 24,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.459660"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.461706",
+      "data": {
+        "operation_index": 25,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.461704"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.463781",
+      "data": {
+        "operation_index": 25,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.463780"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.465912",
+      "data": {
+        "operation_index": 26,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.465910"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.468398",
+      "data": {
+        "operation_index": 26,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.468396"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.470547",
+      "data": {
+        "operation_index": 27,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.470546"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.472666",
+      "data": {
+        "operation_index": 27,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.472663"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.474868",
+      "data": {
+        "operation_index": 28,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.474866"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.476955",
+      "data": {
+        "operation_index": 28,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.476953"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.479122",
+      "data": {
+        "operation_index": 29,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.479121"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.481272",
+      "data": {
+        "operation_index": 29,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.481271"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.483479",
+      "data": {
+        "operation_index": 30,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.483477"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.485737",
+      "data": {
+        "operation_index": 30,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.485735"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.487842",
+      "data": {
+        "operation_index": 31,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.487837"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.489987",
+      "data": {
+        "operation_index": 31,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.489985"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.492280",
+      "data": {
+        "operation_index": 32,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.492278"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.494407",
+      "data": {
+        "operation_index": 32,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.494405"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.496592",
+      "data": {
+        "operation_index": 33,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.496591"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.498776",
+      "data": {
+        "operation_index": 33,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.498775"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.501060",
+      "data": {
+        "operation_index": 34,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.501058"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.503514",
+      "data": {
+        "operation_index": 34,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.503511"
+      }
+    },
+    {
+      "step_type": "operation_attempt",
+      "timestamp": "2025-11-06T20:44:26.505762",
+      "data": {
+        "operation_index": 35,
+        "operation_type": "CREATE_CODE",
+        "target_code_id": null,
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.505761"
+      }
+    },
+    {
+      "step_type": "operation_success",
+      "timestamp": "2025-11-06T20:44:26.507929",
+      "data": {
+        "operation_index": 35,
+        "operation_type": "CREATE_CODE",
+        "confidence": 0.9,
+        "reasoning": "New code not found in existing codebook",
+        "timestamp": "2025-11-06T20:44:26.507927"
+      }
+    },
+    {
+      "step_type": "codebook_update_complete",
+      "timestamp": "2025-11-06T20:44:26.510249",
+      "data": {
+        "successful_operations": 36,
+        "failed_operations": 0,
+        "total_operations": 36,
+        "success_rate": 1.0,
+        "start_time": "2025-11-06T20:44:26.352167",
+        "end_time": "2025-11-06T20:44:26.510210",
+        "final_codebook_stats": {
+          "total_codes": 40,
+          "function_distribution": {
+            "PROBLEM_DEFINITION": 10,
+            "CAUSAL_ATTRIBUTION": 10,
+            "MORAL_EVALUATION": 10,
+            "TREATMENT_ADVOCACY": 10
+          },
+          "total_evidence_quotes": 77,
+          "codes_with_embeddings": 4,
+          "next_available_id": 41
+        },
+        "timestamp": "2025-11-06T20:44:26.510248"
+      }
+    },
+    {
+      "step_type": "batch_analysis_complete",
+      "timestamp": "2025-11-06T20:44:26.512467",
+      "data": {
+        "total_articles_processed": 9,
+        "total_operations_applied": 36,
+        "final_codebook_stats": {
+          "total_codes": 40,
+          "function_distribution": {
+            "PROBLEM_DEFINITION": 10,
+            "CAUSAL_ATTRIBUTION": 10,
+            "MORAL_EVALUATION": 10,
+            "TREATMENT_ADVOCACY": 10
+          },
+          "total_evidence_quotes": 77,
+          "codes_with_embeddings": 4,
+          "next_available_id": 41
+        },
+        "article_results": [
+          {
+            "article_id": 2,
+            "title": "NUS and NTU cast wider net for students through aptitude-based admissions",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:05.400450"
+          },
+          {
+            "article_id": 3,
+            "title": "More fresh university grads found full- time jobs last year, salaries inching up",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:13.707285"
+          },
+          {
+            "article_id": 4,
+            "title": "SUTD forms global alliance with 12 institutions to enhance design education",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:20.367297"
+          },
+          {
+            "article_id": 5,
+            "title": "'First 2 years of university have been very dry': Undergraduate who enrolled during pandemic",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:29.593577"
+          },
+          {
+            "article_id": 6,
+            "title": "SMU graduates to get transcript of co- curricular activities and skills learnt, starting in 2025",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:39.733534"
+          },
+          {
+            "article_id": 7,
+            "title": "Universities in Singapore focusing research efforts on solving global post- pandemic problems",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:48.645223"
+          },
+          {
+            "article_id": 8,
+            "title": "NUS grad rejected Google job and now builds floating gardens",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:43:59.208520"
+          },
+          {
+            "article_id": 9,
+            "title": "NTU keeps top spot on best young university ranking, up to 2nd on another list",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:44:10.687028"
+          },
+          {
+            "article_id": 10,
+            "title": "New SUSS centre launched to boost non-profit sector through education and research",
+            "candidate_codes": 4,
+            "operations": 4,
+            "processing_time": "2025-11-06T20:44:26.349995"
+          }
+        ],
+        "start_time": "2025-11-06T20:42:56.731682",
+        "end_time": "2025-11-06T20:44:26.512465",
+        "success": true,
+        "timestamp": "2025-11-06T20:44:26.512466"
+      }
+    },
+    {
+      "step_type": "codebook_save_start",
+      "timestamp": "2025-11-06T20:44:26.514895",
+      "data": {
+        "output_path": "data/updated_codebook.json",
+        "codebook_stats": {
+          "total_codes": 40,
+          "function_distribution": {
+            "PROBLEM_DEFINITION": 10,
+            "CAUSAL_ATTRIBUTION": 10,
+            "MORAL_EVALUATION": 10,
+            "TREATMENT_ADVOCACY": 10
+          },
+          "total_evidence_quotes": 77,
+          "codes_with_embeddings": 4,
+          "next_available_id": 41
+        },
+        "timestamp": "2025-11-06T20:44:26.514892"
+      }
+    },
+    {
+      "step_type": "codebook_save_success",
+      "timestamp": "2025-11-06T20:44:26.517685",
+      "data": {
+        "output_path": "data/updated_codebook.json",
+        "file_size": 21814,
+        "timestamp": "2025-11-06T20:44:26.517683"
+      }
+    }
+  ]
+}

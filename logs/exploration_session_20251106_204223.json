@@ -1,0 +1,134 @@
+{
+  "steps": [
+    {
+      "step_type": "session_start",
+      "timestamp": "2025-11-06T20:42:23.709241",
+      "data": {
+        "session_id": "20251106_204223",
+        "timestamp": "2025-11-06T20:42:23.709238",
+        "agent_model": "gpt-4o-mini",
+        "strategic_framework": "Entman Framing Theory"
+      }
+    },
+    {
+      "step_type": "batch_analysis_start",
+      "timestamp": "2025-11-06T20:42:23.710307",
+      "data": {
+        "total_articles": 49,
+        "article_titles": [
+          "NUS and NTU cast wider net for students through aptitude-bas...",
+          "More fresh university grads found full- time jobs last year,...",
+          "SUTD forms global alliance with 12 institutions to enhance d...",
+          "'First 2 years of university have been very dry': Undergradu...",
+          "SMU graduates to get transcript of co- curricular activities...",
+          "Universities in Singapore focusing research efforts on solvi...",
+          "NUS grad rejected Google job and now builds floating gardens",
+          "NTU keeps top spot on best young university ranking, up to 2...",
+          "New SUSS centre launched to boost non-profit sector through ...",
+          "Universities ramp up places for computing courses",
+          "Slowing economy not a blip for fresh grads in job market",
+          "Campuses get creative",
+          "Six local universities offer course on imagining Singapore's...",
+          "Beyond A levels; What's new at the six",
+          "More varsity students heading overseas for internships",
+          "Local unis in step with teaching in changing times",
+          "Fintech push leads to pay surge for some fresh grads",
+          "Uni students gun for overseas stints",
+          "Undergrads' top priority: Work-life balance",
+          "Broad-based curriculum a key feature of some universities in...",
+          "Undergrads scramble for internships amid hiring freeze",
+          "NUS and NTU are top universities in Asia in QS world univers...",
+          "In-person university orientation activities return after two...",
+          "Singapore's top students gunning for courses in hot sectors ...",
+          "NTU launches interdisciplinary programme to study climate ch...",
+          "NTU, NUS among world's top 50 research bodies most cited by ...",
+          "Compulsory internships for all NTU undergraduates starting t...",
+          "More AI chatbots for NTU, NUS to answer questions, boost eff...",
+          "Fresh tech graduates from Singapore unis bag highest startin...",
+          "Local unis focus on efforts that benefit society",
+          "Unis to offer more stints with start-ups overseas",
+          "Local universities make strides in Times world rankings",
+          "Overall employment rate among local uni grads 'remains high'...",
+          "SMU's move to diversify is a positive step",
+          "NUS, NTU named in top 100 in Reuters' list of world's most i...",
+          "NUS, NTU's new ratings 'won't sway bosses much'",
+          "New SMU scheme benefits needy students",
+          "Two research centres at NUS, NTU set up to develop data prot...",
+          "NUS is Asia's best university again",
+          "NUS loses title of Asia's top uni but scores in global outlo...",
+          "Singapore 'could be global innovation hub'",
+          "Invite-only career fair for top NTU students draws flak",
+          "Making university learning more enjoyable",
+          "NUS students can pursue a major in performing arts from Augu...",
+          "NUS introduces Wednesday afternoons off and new sports hoste...",
+          "Universities play critical role in social compact: DPM Heng",
+          "NTU and Imperial College to set up research hub, expand stud...",
+          "NTU and Imperial College to set up research hub, expand stud...",
+          "NUS to expand entrepreneurship scheme that has created unico..."
+        ],
+        "initial_codebook_stats": {
+          "total_codes": 4,
+          "function_distribution": {
+            "PROBLEM_DEFINITION": 1,
+            "CAUSAL_ATTRIBUTION": 1,
+            "MORAL_EVALUATION": 1,
+            "TREATMENT_ADVOCACY": 1
+          },
+          "total_evidence_quotes": 16,
+          "codes_with_embeddings": 4,
+          "next_available_id": 5
+        },
+        "timestamp": "2025-11-06T20:42:23.710289"
+      }
+    },
+    {
+      "step_type": "batch_article_start",
+      "timestamp": "2025-11-06T20:42:23.710500",
+      "data": {
+        "article_number": 1,
+        "total_articles": 49,
+        "article_id": 2,
+        "article_title": "NUS and NTU cast wider net for students through aptitude-based admissions",
+        "timestamp": "2025-11-06T20:42:23.710495"
+      }
+    },
+    {
+      "step_type": "article_analysis_start",
+      "timestamp": "2025-11-06T20:42:23.710656",
+      "data": {
+        "article_id": 2,
+        "article_title": "NUS and NTU cast wider net for students through aptitude-based admissions",
+        "article_length": 5914,
+        "timestamp": "2025-11-06T20:42:23.710654"
+      }
+    },
+    {
+      "step_type": "prompt_generated",
+      "timestamp": "2025-11-06T20:42:23.710811",
+      "data": {
+        "article_id": 2,
+        "prompt_length": 6584,
+        "framework": "Entman Framing Theory",
+        "timestamp": "2025-11-06T20:42:23.710810"
+      }
+    },
+    {
+      "step_type": "context_set",
+      "timestamp": "2025-11-06T20:42:23.710974",
+      "data": {
+        "article_id": 2,
+        "context_length": 510,
+        "timestamp": "2025-11-06T20:42:23.710973"
+      }
+    },
+    {
+      "step_type": "fallback_method_used",
+      "timestamp": "2025-11-06T20:42:24.888826",
+      "data": {
+        "article_id": 2,
+        "reason": "structured_output_not_supported",
+        "timestamp": "2025-11-06T20:42:24.888818"
+      }
+    }
+  ]
+}

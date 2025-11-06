@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "total_codes": 4,
+    "next_id": 5,
+    "created_at": "2025-11-06T11:30:00Z"
+  },
+  "codes": {
+    "1": {
+      "code_id": 1,
+      "name": "Historic Academic Achievement",
+      "function": "PROBLEM_DEFINITION",
+      "evidence": {
+        "1": [
+          "NUS has broken into the top 10 in a global ranking of institutions for the first time",
+          "It emerged eighth in the latest Britain-based Quacquarelli Symonds (QS) World University Rankings 2024",
+          "It was previously 11th in the 2023 edition",
+          "It is the highest-ranked Asian university and the first from Asia to be placed among the top 10 in the table"
+        ]
+      },
+      "embedding": [
+        0.823,
+        0.156,
+        -0.289,
+        0.734,
+        0.445
+      ],
+      "created_at": "2025-11-06T11:00:00Z",
+      "updated_at": "2025-11-06T11:00:00Z",
+      "parent_code_id": null
+    },
+    "2": {
+      "code_id": 2,
+      "name": "Institutional Excellence Factors",
+      "function": "CAUSAL_ATTRIBUTION",
+      "evidence": {
+        "1": [
+          "This achievement was made possible by the excellent contributions and outstanding work of our talented faculty, staff and students",
+          "NUS came in seventh for employment outcomes and 15th for academic reputation",
+          "The latest QS ranking features updated methodology using three new metrics \u2013 an institution's commitment to sustainability, employment outcomes, and international research network",
+          "showcases NUS' dedication to research excellence, innovation and sustainability"
+        ]
+      },
+      "embedding": [
+        0.567,
+        -0.234,
+        0.891,
+        -0.123,
+        0.678
+      ],
+      "created_at": "2025-11-06T11:05:00Z",
+      "updated_at": "2025-11-06T11:05:00Z",
+      "parent_code_id": null
+    },
+    "3": {
+      "code_id": 3,
+      "name": "Educational Mission and Values",
+      "function": "MORAL_EVALUATION",
+      "evidence": {
+        "1": [
+          "This is a testament to our capabilities and commitment to providing a world-class and interdisciplinary education",
+          "to nurture agile and resilient graduates with diverse skills and knowledge for an ever-changing world",
+          "who remain deeply committed to flying the flag of our distinguished quality of education and creating positive impact in the classroom and beyond",
+          "This unprecedented milestone marks a remarkable moment for Asian higher education"
+        ]
+      },
+      "embedding": [
+        0.345,
+        0.712,
+        -0.456,
+        0.234,
+        -0.589
+      ],
+      "created_at": "2025-11-06T11:10:00Z",
+      "updated_at": "2025-11-06T11:10:00Z",
+      "parent_code_id": null
+    },
+    "4": {
+      "code_id": 4,
+      "name": "Continued Excellence Strategy",
+      "function": "TREATMENT_ADVOCACY",
+      "evidence": {
+        "1": [
+          "commitment to providing a world-class and interdisciplinary education to nurture agile and resilient graduates",
+          "dedication to research excellence, innovation and sustainability",
+          "creating positive impact in the classroom and beyond",
+          "amongst many other prestigious institutions worldwide"
+        ]
+      },
+      "embedding": [
+        -0.234,
+        0.456,
+        0.123,
+        -0.678,
+        0.345
+      ],
+      "created_at": "2025-11-06T11:15:00Z",
+      "updated_at": "2025-11-06T11:15:00Z",
+      "parent_code_id": null
+    }
+  }
+}
