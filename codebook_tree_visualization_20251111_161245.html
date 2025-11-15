@@ -1,0 +1,3440 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codebook Tree Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .stats-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .levels-breakdown {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .levels-breakdown h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .level-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .level-label {
+            width: 80px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .level-progress {
+            flex: 1;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .level-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            transition: width 0.3s ease;
+        }
+        
+        .level-count {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .function-section {
+            margin-bottom: 40px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .function-header {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .function-header:hover {
+            background: linear-gradient(45deg, #3d566e, #34495e);
+        }
+        
+        .function-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .function-stats {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .function-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .function-toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .function-content {
+            background: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .function-content.expanded {
+            max-height: 10000px;
+        }
+        
+        .tree-container {
+            padding: 20px;
+        }
+        
+        .tree-node {
+            margin-bottom: 8px;
+            border-left: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .tree-node.root-node {
+            border-left: 3px solid #3498db;
+        }
+        
+        .node-header {
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .node-header:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .root-node .node-header {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .node-toggle {
+            color: #666;
+            font-weight: bold;
+            min-width: 20px;
+        }
+        
+        .node-name {
+            font-weight: 600;
+            color: #2c3e50;
+            flex: 1;
+        }
+        
+        .node-meta {
+            font-size: 0.85rem;
+            color: #666;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .children-container {
+            margin-left: 30px;
+            margin-top: 8px;
+            padding-left: 15px;
+            border-left: 1px dashed #ccc;
+        }
+        
+        .evidence-details {
+            margin: 10px 15px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .article-evidence {
+            margin-bottom: 15px;
+        }
+        
+        .article-evidence:last-child {
+            margin-bottom: 0;
+        }
+        
+        .article-evidence strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .quotes-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .quotes-list li {
+            background: white;
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            border-left: 3px solid #ffc107;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .quotes-list li:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .children-container {
+                margin-left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌳 Codebook Tree Visualization</h1>
+            <p>Hierarchical view of qualitative codes organized by frame functions</p>
+        </header>
+        
+        <div class="stats-panel">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">266</div>
+                    <div class="stat-label">Total Codes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">147</div>
+                    <div class="stat-label">Root Codes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">119</div>
+                    <div class="stat-label">Child Codes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Max Tree Depth</div>
+                </div>
+            </div>
+            
+            <div class="levels-breakdown">
+                <h3>📊 Codes by Tree Level</h3>
+    
+                <div class="level-bar">
+                    <div class="level-label">Level 0</div>
+                    <div class="level-progress">
+                        <div class="level-fill" style="width: 100.0%"></div>
+                    </div>
+                    <div class="level-count">147 codes</div>
+                </div>
+            
+                <div class="level-bar">
+                    <div class="level-label">Level 1</div>
+                    <div class="level-progress">
+                        <div class="level-fill" style="width: 78.91156462585033%"></div>
+                    </div>
+                    <div class="level-count">116 codes</div>
+                </div>
+            
+                <div class="level-bar">
+                    <div class="level-label">Level 2</div>
+                    <div class="level-progress">
+                        <div class="level-fill" style="width: 2.0408163265306123%"></div>
+                    </div>
+                    <div class="level-count">3 codes</div>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="content">
+    
+            <div class="function-section">
+                <div class="function-header" onclick="toggleFunction(this)">
+                    <div>
+                        <div class="function-title">Problem Definition</div>
+                        <div class="function-description">Codes that define and identify problems, issues, or challenges</div>
+                    </div>
+                    <div>
+                        <div class="function-stats">
+                            62 codes | 
+                            Max depth: 2 | 
+                            Roots: 39
+                        </div>
+                        <div class="function-toggle">▼</div>
+                    </div>
+                </div>
+                <div class="function-content">
+                    <div class="tree-container">
+        
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Historic Academic Achievement</span>
+            <span class="node-meta">
+                ID: 1 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 1:</strong><ul class='quotes-list'><li>NUS has broken into the top 10 in a global ranking of institutions for the first time</li><li>It emerged eighth in the latest Britain-based Quacquarelli Symonds (QS) World University Rankings 2024</li><li>It was previously 11th in the 2023 edition</li><li>It is the highest-ranked Asian university and the first from Asia to be placed among the top 10 in the table</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Aptitude-based admissions</span>
+            <span class="node-meta">
+                ID: 5 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 2:</strong><ul class='quotes-list'><li>NUS and NTU are casting a wider net to consider more applicants through aptitude-based admissions</li><li>both universities are increasingly employing a broad set of qualitative assessments</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global Alliance for Design Education</span>
+            <span class="node-meta">
+                ID: 14 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 4:</strong><ul class='quotes-list'><li>SUTD has formed a global alliance with 12 institutions to enhance design education.</li><li>the alliance... will explore student and faculty exchanges, and other forms of collaboration to bring students from different fields of study together as they solve real-world design problems.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Limited University Experience</span>
+            <span class="node-meta">
+                ID: 19 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 5:</strong><ul class='quotes-list'><li>It was very restrictive and I wasn't able to enjoy the full uni experience with orientation and camps, which are a big part of university culture.</li><li>All these experiences made starting university very different from what I thought it would be like.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Co-Curricular Recognition</span>
+            <span class="node-meta">
+                ID: 23 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 6:</strong><ul class='quotes-list'><li>'Students from Singapore Management University (SMU) will soon have a transcript recording their co-curricular activities (CCA) and the skills they have learnt – a first among universities here – in a...</li><li>'the aim was to promote a culture of meaningful reflection, and guide students in deepening and documenting their learning.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Post-pandemic challenges</span>
+            <span class="node-meta">
+                ID: 27 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 7:</strong><ul class='quotes-list'><li>pressing global issues such as food security and public health - the challenges of a post-pandemic era</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Invention Studio for Community Good</span>
+            <span class="node-meta">
+                ID: 32 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 8:</strong><ul class='quotes-list'><li>'the prospect of making his passion a career took root only in 2009'</li><li>'the final push to create an invention studio for the community came from the late founder of non-profit Ground Up Initiative (GUI) Tay Lai Hock'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Non-profit sector capability</span>
+            <span class="node-meta">
+                ID: 44 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 10:</strong><ul class='quotes-list'><li>'In times of change and uncertainty, there is a pressing need for non-profits to improve capabilities.'</li><li>'With non-profits having stronger capabilities, the whole non-profit sector will become more trusted and vibrant.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Employment Trends and Workforce Demand</span>
+            <span class="node-meta">
+                ID: 51 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 9 | Evidence: 6 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 3:</strong><ul class='quotes-list'><li>More university graduates secured full-time jobs last year</li><li>84 per cent of fresh graduates in the labour force were in full-time permanent roles</li></ul></div><div class='article-evidence'><strong>Article 12:</strong><ul class='quotes-list'><li>A depressed economy does not seem to have stopped a vast majority of Singapore university graduates from landing jobs last year</li><li>nearly nine in 10 (89.7 per cent) members of the Class of 2016 in the labour force said they found jobs within six months of their final examinations</li></ul></div><div class='article-evidence'><strong>Article 34:</strong><ul class='quotes-list'><li>'overall employment rate was 89.1 per cent among those who were "economically active"'</li><li>'82.7 per cent were employed in full-time permanent jobs within six months'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Future Issues in Singapore</span>
+            <span class="node-meta">
+                ID: 73 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Socio-economic challenges</span>
+            <span class="node-meta">
+                ID: 72 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 15:</strong><ul class='quotes-list'><li>'the course aims to help students understand the socio-economic challenges that Singapore grapples with.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Increasing Demand for Career Opportunities in Computing</span>
+            <span class="node-meta">
+                ID: 80 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Increasing demand for computing graduates</span>
+            <span class="node-meta">
+                ID: 50 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 11:</strong><ul class='quotes-list'><li>A growing demand for graduates trained in areas such as artificial intelligence, data analytics and cyber security</li><li>the intake for its School of Computing has almost doubled from about 500 in 2015 to 1,000 last year</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Adaptation</span>
+            <span class="node-meta">
+                ID: 88 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Future Planning</span>
+            <span class="node-meta">
+                ID: 67 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 14:</strong><ul class='quotes-list'><li>students get to discuss issues affecting Singapore and its future</li><li>the idea was to build upon National Education</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">None</span>
+            <span class="node-meta">
+                ID: 87 | Evidence: 3 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 17:</strong><ul class='quotes-list'><li>In Singapore's changing higher education landscape, a greater variety of degree options has been offered in the past few years.</li><li>To attract students and adapt to their learning styles today, it uses creative tools, such as animation and games, in the classrooms.</li></ul></div><div class='article-evidence'><strong>Article 21:</strong><ul class='quotes-list'><li>the urgent need to move in the direction of broad-based learning</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Pay Surge for Graduates</span>
+            <span class="node-meta">
+                ID: 93 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 18:</strong><ul class='quotes-list'><li>Graduates from Nanyang Technological University's (NTU's) business and computing double degree programme had the highest pay jump last year among their peers</li><li>this put their salaries almost on a par with those who studied law or medicine</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Global Educational Experiences</span>
+            <span class="node-meta">
+                ID: 99 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Overseas Exchange as Essential Experience</span>
+            <span class="node-meta">
+                ID: 98 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 19:</strong><ul class='quotes-list'><li>OPTIONAL overseas exchange programmes have become a way for undergraduates to gild their resumes.</li><li>Universities say the yen for global exposure has sharply increased in the last decade.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Work-life balance as a priority</span>
+            <span class="node-meta">
+                ID: 102 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 20:</strong><ul class='quotes-list'><li>a work-life balance. It came out as the top motivating factor</li><li>younger workers do not want to compromise their private life for work</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Internship Availability Issues</span>
+            <span class="node-meta">
+                ID: 111 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Rankings</span>
+            <span class="node-meta">
+                ID: 117 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Return of In-person Activities</span>
+            <span class="node-meta">
+                ID: 124 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 24:</strong><ul class='quotes-list'><li>Orientation programmes for university students are making a comeback after a two-year hiatus</li><li>orientation camps in 2020 and last year were largely virtual and muted affairs, owing to Covid-19 restrictions on group sizes and gatherings</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Declining Interest in Traditional Courses</span>
+            <span class="node-meta">
+                ID: 129 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 25:</strong><ul class='quotes-list'><li>Accountancy and chemical engineering no longer the preferred tracks at local universities.</li><li>an apparent decline in interest in chemical engineering (which opens up career pathways in the petrochemical industries)</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Climate Change as a Critical Issue</span>
+            <span class="node-meta">
+                ID: 134 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 26:</strong><ul class='quotes-list'><li>A new $50 million interdisciplinary research programme launched by Nanyang Technological University (NTU) on Wednesday will examine various aspects of climate change.</li><li>Prof Horton told ST that while climate scientists are beginning to better understand the physical impact of climate change -- such as sea level rise, flooding and heatwaves -- it has yet to be properl...</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">University Recognition and Impact</span>
+            <span class="node-meta">
+                ID: 139 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">NTU's top ranking</span>
+            <span class="node-meta">
+                ID: 37 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 9:</strong><ul class='quotes-list'><li>Nanyang Technological University (NTU) has again been named the world's best young university by Quacquarelli Symonds (QS).</li><li>This is the seventh consecutive year NTU has topped the education consultancy's Top 50 Under 50 ranking.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Research Impact</span>
+            <span class="node-meta">
+                ID: 138 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 27:</strong><ul class='quotes-list'><li>Nanyang Technological University (NTU) and the National University of Singapore (NUS) are among the world's top 50 research organisations whose work underpins solutions created by major global innovat...</li><li>This is the first time that Clarivate has ranked institutions whose research was referenced by global innovators.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Internship Policies and Trends</span>
+            <span class="node-meta">
+                ID: 146 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Compulsory Internships</span>
+            <span class="node-meta">
+                ID: 145 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 28:</strong><ul class='quotes-list'><li>Internships will be made compulsory from August for all new students enrolling in the Nanyang Technological University (NTU).</li><li>Currently, only some schools in NTU have such mandatory internships.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Student Inquiries</span>
+            <span class="node-meta">
+                ID: 151 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 29:</strong><ul class='quotes-list'><li>Every day, educators at Nanyang Technological University (NTU) like Prof Ng receive a slew of e-mails from students seeking feedback on assignments or asking about upcoming tests.</li><li>These inquiries tend to surge right before a test - often late at night as students cram for it during last-minute revision sessions.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Employment Challenges</span>
+            <span class="node-meta">
+                ID: 156 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Internship Opportunities Reduced</span>
+            <span class="node-meta">
+                ID: 110 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 22:</strong><ul class='quotes-list'><li>firms' hiring came to a halt, as work for interns has been put on the back burner</li><li>Data from job portals this year has shown a drop in internships</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Job Market Concerns</span>
+            <span class="node-meta">
+                ID: 155 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 30:</strong><ul class='quotes-list'><li>The recent job cuts in the tech sector in the second half of 2022 have been unnerving for fresh tech graduates like Mr Fazirul.</li><li>The possibility of being laid off three months into my first job is definitely worrying.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Focus on local relevance</span>
+            <span class="node-meta">
+                ID: 161 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 31:</strong><ul class='quotes-list'><li>Many universities do similar things - they award degrees and do research in similar areas. But how do we stand out?</li><li>It is important that... what we do feeds back into society.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">International Opportunities for Students</span>
+            <span class="node-meta">
+                ID: 169 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global Exposure for Students</span>
+            <span class="node-meta">
+                ID: 168 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 32:</strong><ul class='quotes-list'><li>Two local universities - Singapore Management University (SMU) and Nanyang Technological University (NTU) - have introduced programmes over the past year to allow students to intern at start-ups overs...</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">University Rankings and Performance</span>
+            <span class="node-meta">
+                ID: 177 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 116 | Evidence: 6 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 23:</strong><ul class='quotes-list'><li>NUS and NTU have emerged as the top universities in Asia</li><li>Singapore has 23 university courses that made it to the global top 10 lists</li></ul></div><div class='article-evidence'><strong>Article 40:</strong><ul class='quotes-list'><li>NUS has been ranked the top university in Asia</li><li>the latest Asia University Rankings 2017</li></ul></div><div class='article-evidence'><strong>Article 41:</strong><ul class='quotes-list'><li>NUS may have gone down by just one spot but, in the process, it has been knocked off its perch as Asia's top university</li><li>NUS slipped to No. 23, while Tsinghua University climbed eight places to No. 22.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Diversification of SMU</span>
+            <span class="node-meta">
+                ID: 184 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 35:</strong><ul class='quotes-list'><li>SMU to expand beyond being a business-focused institution</li><li>its move to expand its scope of offerings may thus also make good strategic sense</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">University Rankings</span>
+            <span class="node-meta">
+                ID: 191 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Innovation Ranking</span>
+            <span class="node-meta">
+                ID: 190 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 36:</strong><ul class='quotes-list'><li>NUS climbed five spots to rank 58th</li><li>NTU made its first appearance in the top 100</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Strong Reputation but Limited Impact</span>
+            <span class="node-meta">
+                ID: 196 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 37:</strong><ul class='quotes-list'><li>the fine showing may do little to improve their already strong reputation among employers here</li><li>I am unsure how much higher their employability can get when it is already so near to the ceiling</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Financial Burden on Students</span>
+            <span class="node-meta">
+                ID: 201 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 38:</strong><ul class='quotes-list'><li>'I am not sure if I will have enough money'</li><li>'tuition fees for the four years of study, which would come up to about $45,000'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Data Privacy Concern</span>
+            <span class="node-meta">
+                ID: 206 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 39:</strong><ul class='quotes-list'><li>Privacy has been pushed to the forefront, especially with the recent cases of the SingHealth data breach, and the case of Cambridge Analytica, which affected people worldwide.</li><li>There are two issues to be addressed here - security and privacy.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Invite-only career fair</span>
+            <span class="node-meta">
+                ID: 223 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 43:</strong><ul class='quotes-list'><li>the idea of an invite-only fair did not sit well with many Nanyang Technological University (NTU) students</li><li>some undergraduates who did not fall in the categories said they were not aware of this event</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">University Challenges</span>
+            <span class="node-meta">
+                ID: 229 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Rankings Improvement</span>
+            <span class="node-meta">
+                ID: 176 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 33:</strong><ul class='quotes-list'><li>NUS is No 26, rising three spots from last year</li><li>NTU is up 10 places at No 76</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Pressure on students</span>
+            <span class="node-meta">
+                ID: 228 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 44:</strong><ul class='quotes-list'><li>to reduce the pressure on students</li><li>the latest changes in NUS and NTU would seem like a breath of fresh air</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Arts in Education</span>
+            <span class="node-meta">
+                ID: 234 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Thriving Arts Scene</span>
+            <span class="node-meta">
+                ID: 61 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 13:</strong><ul class='quotes-list'><li>The arts is thriving in universities here, with the three major tertiary institutions - NUS, the Singapore Management University (SMU) and Nanyang Technological University (NTU) - brandishing packed a...</li><li>Being in SMU has given accountancy student Seah Yi Ru, 20, president of the university's Chinese orchestra, the chance to be exposed to the arts as both a performer and an audience member.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Initiatives</span>
+            <span class="node-meta">
+                ID: 242 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Integration of Arts into Education</span>
+            <span class="node-meta">
+                ID: 233 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 45:</strong><ul class='quotes-list'><li>'NUS hopes to expand the number of eligible groups'</li><li>'...to integrate art into their learning.'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Holistic Education Initiative</span>
+            <span class="node-meta">
+                ID: 241 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 46:</strong><ul class='quotes-list'><li>This move is designed to ease freshmen’s transition into university and encourage self-directed personal growth and development from the first year.</li><li>NUSOne emphasizes both academic excellence and holistic education.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Social Compact Under Stress</span>
+            <span class="node-meta">
+                ID: 248 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 47:</strong><ul class='quotes-list'><li>'the social compact is under stress in many societies'</li><li>'Disparities are widening, and many communities feel excluded from progress.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Student Mobility Opportunities</span>
+            <span class="node-meta">
+                ID: 254 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Increasing Demand for Overseas Internships</span>
+            <span class="node-meta">
+                ID: 79 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 16:</strong><ul class='quotes-list'><li>more students from local universities are venturing beyond Singapore for their internship stints</li><li>NUS saw an average year-on-year increase of about 22 per cent in the number of overseas internships completed</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 253 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 48:</strong><ul class='quotes-list'><li>Students at Nanyang Technological University (NTU) will soon have more opportunities to go on exchange programmes</li><li>the institutions would be increasing mobility of students between them</li></ul></div><div class='article-evidence'><strong>Article 49:</strong><ul class='quotes-list'><li>Students at Nanyang Technological University (NTU) will soon have more opportunities to go on exchange programmes and undertake joint research with Britain's Imperial College London.</li><li>the expansion of joint research activities between NTU and Imperial that aim to tackle global challenges</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Singapore Innovation and Entrepreneurship Initiatives</span>
+            <span class="node-meta">
+                ID: 264 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global Innovation Hub</span>
+            <span class="node-meta">
+                ID: 218 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 42:</strong><ul class='quotes-list'><li>the country's plan to pump $19 billion into science and technology over the next five years could 'make Singapore a 'go to' destination as a global innovation and entrepreneurship hub'</li><li>the plan will see researchers having to compete more for funding</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Expansion of NOC programme</span>
+            <span class="node-meta">
+                ID: 263 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 50:</strong><ul class='quotes-list'><li>A programme credited with seeding the start-up community in Singapore is being expanded.</li><li>The hope is that NOC will produce talent who can innovate within those areas.</li></ul></div></div>
+    </div></div></div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="function-section">
+                <div class="function-header" onclick="toggleFunction(this)">
+                    <div>
+                        <div class="function-title">Causal Attribution</div>
+                        <div class="function-description">Codes that explain causes, reasons, or factors behind issues</div>
+                    </div>
+                    <div>
+                        <div class="function-stats">
+                            70 codes | 
+                            Max depth: 3 | 
+                            Roots: 36
+                        </div>
+                        <div class="function-toggle">▼</div>
+                    </div>
+                </div>
+                <div class="function-content">
+                    <div class="tree-container">
+        
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Institutional Excellence Factors</span>
+            <span class="node-meta">
+                ID: 2 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 1:</strong><ul class='quotes-list'><li>This achievement was made possible by the excellent contributions and outstanding work of our talented faculty, staff and students</li><li>NUS came in seventh for employment outcomes and 15th for academic reputation</li><li>The latest QS ranking features updated methodology using three new metrics – an institution's commitment to sustainability, employment outcomes, and international research network</li><li>showcases NUS' dedication to research excellence, innovation and sustainability</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Role of Design in Future Challenges</span>
+            <span class="node-meta">
+                ID: 15 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 4:</strong><ul class='quotes-list'><li>design plays an important role in tackling Singapore’s future challenges, such as transitioning to clean energy.</li><li>our complex challenges such as population health and sustainability call for both technology and design-led innovation.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Regulatory Challenges</span>
+            <span class="node-meta">
+                ID: 33 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 8:</strong><ul class='quotes-list'><li>'trialling the project has hit a regulatory wall since then'</li><li>'does not have permission to trial the prototype in public waters'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Effects of the Pandemic</span>
+            <span class="node-meta">
+                ID: 39 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Change and uncertainty</span>
+            <span class="node-meta">
+                ID: 45 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 10:</strong><ul class='quotes-list'><li>'In times of change and uncertainty, there is a pressing need for non-profits to improve capabilities.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Collaborative Research Efforts</span>
+            <span class="node-meta">
+                ID: 69 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Collaborative Efforts</span>
+            <span class="node-meta">
+                ID: 68 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 14:</strong><ul class='quotes-list'><li>the presidents of the six universities formed a working group</li><li>to jointly come up with the idea for the course</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Innovative Research Practices</span>
+            <span class="node-meta">
+                ID: 75 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Need for creative thinking</span>
+            <span class="node-meta">
+                ID: 74 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 15:</strong><ul class='quotes-list'><li>'It also seeks to promote creative thinking in seeking solutions to these challenges.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Educational Opportunities and Outcomes</span>
+            <span class="node-meta">
+                ID: 82 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Inflexibility of Traditional Educational Methods</span>
+            <span class="node-meta">
+                ID: 89 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 17:</strong><ul class='quotes-list'><li>In an age dominated by technology and social media, we have to think beyond the traditional instructional methods.</li><li>The Yong Loo Lin school's dean... said it refines the curriculum to keep pace with new healthcare challenges.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Technological Transformations in Business</span>
+            <span class="node-meta">
+                ID: 95 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Rise of e-commerce and digital transformation</span>
+            <span class="node-meta">
+                ID: 52 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 11:</strong><ul class='quotes-list'><li>the demand is fuelled by the rise of e-commerce platforms</li><li>Companies and public agencies are employing digital technology to transform their business models and processes</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Fintech Revolution</span>
+            <span class="node-meta">
+                ID: 94 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 18:</strong><ul class='quotes-list'><li>Banks said the 'fintech revolution' sweeping the world makes combined degrees for business and computing valuable</li><li>the demand for complex technology and services to support such changes creates the demand for dual-degree and combined-skills graduates</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Financial Burden of Exchange Programs</span>
+            <span class="node-meta">
+                ID: 100 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 19:</strong><ul class='quotes-list'><li>To pay for these trips, students apply for loans, bursaries or grants.</li><li>Tuition costs the same as for local courses. But students rack up bills for meals, living expenses, rent and additional travel.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Job dissatisfaction due to lack of balance</span>
+            <span class="node-meta">
+                ID: 103 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 20:</strong><ul class='quotes-list'><li>If they cannot find that, they will leave</li><li>many young people have no qualms about taking unpaid leave or 'job hopping'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Challenges in Research and Education</span>
+            <span class="node-meta">
+                ID: 107 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Interdisciplinary research</span>
+            <span class="node-meta">
+                ID: 28 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 7:</strong><ul class='quotes-list'><li>to 'create powerful, unconventional solutions', researchers must work across schools</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Outdated educational structures</span>
+            <span class="node-meta">
+                ID: 106 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 21:</strong><ul class='quotes-list'><li>it is harder to dismantle long-established structures than to start something brand-new</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Pandemic Effects</span>
+            <span class="node-meta">
+                ID: 113 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 20 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 5:</strong><ul class='quotes-list'><li>I would say my experience was very dry, due to the pandemic.</li><li>The pandemic has limited what I can do so far.</li></ul></div><div class='article-evidence'><strong>Article 24:</strong><ul class='quotes-list'><li>orientation camps in 2020 and last year were largely virtual and muted affairs, owing to Covid-19 restrictions on group sizes and gatherings</li><li>the relaxation of rules will give their programmes an extra buzz</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Investment in Education</span>
+            <span class="node-meta">
+                ID: 119 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Investment in Arts</span>
+            <span class="node-meta">
+                ID: 62 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 13:</strong><ul class='quotes-list'><li>The universities say they are investing in the arts to give students an outlet for their talent and engage them intellectually and creatively.</li><li>While the NUS has consolidated the bulk of its arts events in one festival, the SMU has headed in the other direction, spending about a quarter of a million dollars on year-round arts programmes.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Climate Change and Its Multifaceted Causes</span>
+            <span class="node-meta">
+                ID: 135 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 26:</strong><ul class='quotes-list'><li>Other aspects of the programme will examine how biodiversity such as flora and fauna responds to climate change, mapping out ways in which the world could get to net-zero through a negative emissions ...</li><li>little is known about how climate change could affect natural ecosystems from rainforests to mangroves, how it could affect construction workers, as well as the world's finances and energy use.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global Innovators</span>
+            <span class="node-meta">
+                ID: 140 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 27:</strong><ul class='quotes-list'><li>the Chinese Academy of Sciences in China, followed by the Massachusetts Institute of Technology and Stanford University in the United States.</li><li>These innovators include 3M, Airbus and Rolls-Royce.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Limited Internship Requirements</span>
+            <span class="node-meta">
+                ID: 147 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 28:</strong><ul class='quotes-list'><li>Currently, only some schools in NTU have such mandatory internships.</li><li>Other institutions like the Singapore Management University and the Singapore University of Technology and Design have already made internships compulsory for all students.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Lack of Student Initiative</span>
+            <span class="node-meta">
+                ID: 152 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 29:</strong><ul class='quotes-list'><li>the answers are usually available online or in e-mails, but sometimes, students just don't check</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Pandemic Impact on Employment Dynamics</span>
+            <span class="node-meta">
+                ID: 158 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Pandemic Impact on Hiring</span>
+            <span class="node-meta">
+                ID: 112 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 22:</strong><ul class='quotes-list'><li>This is unsurprising, given the reduction in demand for those services amid the pandemic</li><li>the outbreak has caused him to scale down his plans</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Job Cuts and Layoffs</span>
+            <span class="node-meta">
+                ID: 157 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 30:</strong><ul class='quotes-list'><li>Laying off existing workers are pre-emptive measures by employers in anticipation of a gloomy outlook.</li><li>The media highlights the job cuts, but what we fail to realise is that this is taking place concurrently with other companies hiring.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Shifts in Career Interests</span>
+            <span class="node-meta">
+                ID: 171 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Shift Towards Data and Sustainability Fields</span>
+            <span class="node-meta">
+                ID: 130 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 25:</strong><ul class='quotes-list'><li>Students' interest in sustainability-related fields.</li><li>the younger generation are more interested in trying to make a difference to the environment and society.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Shift Towards Entrepreneurship</span>
+            <span class="node-meta">
+                ID: 170 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 32:</strong><ul class='quotes-list'><li>This comes on the back of recommendations by the Entrepreneurship Review Committee and the shift towards entrepreneurship in the 'new economic order'.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Higher Education Development in Asia</span>
+            <span class="node-meta">
+                ID: 179 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 118 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 23:</strong><ul class='quotes-list'><li>consistent improvements made by Singaporean institutions result from a decade of investment and strategising</li><li>the Singaporean Government inaugurated the Singapore Universities Fund</li></ul></div><div class='article-evidence'><strong>Article 42:</strong><ul class='quotes-list'><li>the enhanced budget comes at a time when many other countries are cutting back on research spending</li><li>RIE2020 respond emphatically to calls for strengthening our entrepreneurial ecosystem</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Economic Aspects</span>
+            <span class="node-meta">
+                ID: 181 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node has-children" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Economic Factors</span>
+            <span class="node-meta">
+                ID: 58 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Economic Recovery</span>
+            <span class="node-meta">
+                ID: 10 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 3:</strong><ul class='quotes-list'><li>Singapore's economy grew by 7.2 per cent last year</li><li>the country eased Covid-19 curbs, allowing for more economic activity</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Economic Activity</span>
+            <span class="node-meta">
+                ID: 180 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 34:</strong><ul class='quotes-list'><li>'The phrase refers to those who are working, and those who are not working, but actively looking and available for work.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 186 | Evidence: 1 quotes
+                 | Children: 1
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 47:</strong><ul class='quotes-list'><li>'we are not immune to some of these forces.'</li></ul></div></div>
+    <div class='children-container'>
+    <div class="tree-node has-children" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Influence of External Factors on Higher Education</span>
+            <span class="node-meta">
+                ID: 163 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Impact of the pandemic</span>
+            <span class="node-meta">
+                ID: 38 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 9:</strong><ul class='quotes-list'><li>Such rankings, though, come at a time when higher education has been disrupted by the coronavirus pandemic.</li><li>the Covid-19 global pandemic has reinforced to the entire world the important role and significant value of universities for societies.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global rankings influence</span>
+            <span class="node-meta">
+                ID: 162 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 31:</strong><ul class='quotes-list'><li>questions on whether these institutions are tweaking their teaching and research models too much in order to fulfil criteria drawn up by foreign publications</li><li>Ong Ye Kung... urged universities not to chase rankings 'blindly'.</li></ul></div></div>
+    </div></div></div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Institutions and Their Impact</span>
+            <span class="node-meta">
+                ID: 193 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Performance</span>
+            <span class="node-meta">
+                ID: 192 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 36:</strong><ul class='quotes-list'><li>the educational institutions doing the most to advance science</li><li>NTU president Subra Suresh said the university has 'consistently delivered in terms of research output, innovation and teaching excellence'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 198 | Evidence: 2 quotes
+                 | Children: 1
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 44:</strong><ul class='quotes-list'><li>Singapore's rigorous and demanding education system</li><li>too focused on exams and grades</li></ul></div></div>
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">High Demand for Graduates</span>
+            <span class="node-meta">
+                ID: 197 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 37:</strong><ul class='quotes-list'><li>graduates from Singapore's two oldest universities are highly sought after by employers</li><li>it is expected that there will be more A-level students choosing to stay in Singapore to pursue their degrees locally</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Economic Factors</span>
+            <span class="node-meta">
+                ID: 203 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Economic conditions</span>
+            <span class="node-meta">
+                ID: 57 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 12:</strong><ul class='quotes-list'><li>A depressed economy does not seem to have stopped</li><li>the proportion of graduates who managed to secure permanent full-time employment fell to 80.2 per cent</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Economic Circumstances</span>
+            <span class="node-meta">
+                ID: 202 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 38:</strong><ul class='quotes-list'><li>'based solely on students' household economic circumstances'</li><li>'the eldest child of three from a single-parent family'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Cybersecurity Breaches</span>
+            <span class="node-meta">
+                ID: 207 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 39:</strong><ul class='quotes-list'><li>the recent cases of the SingHealth data breach, and the case of Cambridge Analytica</li><li>some solutions are already available, and some are not.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Higher Education Competition</span>
+            <span class="node-meta">
+                ID: 211 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Competitive Higher Education Landscape</span>
+            <span class="node-meta">
+                ID: 185 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 35:</strong><ul class='quotes-list'><li>SMU may find itself in an increasingly crowded and perhaps saturated pool</li><li>the diversity of a student population on campus is a key factor that enriches the undergraduate experience</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Competition in Higher Education</span>
+            <span class="node-meta">
+                ID: 213 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Competition from Other Universities</span>
+            <span class="node-meta">
+                ID: 210 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 40:</strong><ul class='quotes-list'><li>very tough competition from Peking University and Tsinghua</li><li>the competition is, of course, much keener when you are at the top</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Competition from Chinese universities</span>
+            <span class="node-meta">
+                ID: 212 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 41:</strong><ul class='quotes-list'><li>Tsinghua's rise is driven largely by improvements in its teaching environment</li><li>China has positioned its universities at the heart of its national economic growth strategy.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Academic Performance Influences</span>
+            <span class="node-meta">
+                ID: 225 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 6 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 2:</strong><ul class='quotes-list'><li>Academic grades can only tell you so much about a student</li><li>they are giving more students the opportunity to be considered beyond their grades</li></ul></div><div class='article-evidence'><strong>Article 6:</strong><ul class='quotes-list'><li>'It also emphasises to students the range of life skills and qualities needed to succeed in the future, beyond academic grades.'</li><li>'the learning from these experiences should not be left to chance alone.'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Minimum GPA requirement</span>
+            <span class="node-meta">
+                ID: 224 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 43:</strong><ul class='quotes-list'><li>the organisers checked resumes and GPAs at the door</li><li>they wanted to ensure the students were of a certain calibre</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Limited Opportunities</span>
+            <span class="node-meta">
+                ID: 236 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Limited Local Opportunities</span>
+            <span class="node-meta">
+                ID: 81 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 16:</strong><ul class='quotes-list'><li>those who have it are 'more vivacious and more daring with their perspectives during interviews'</li><li>students face challenges when they go abroad</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Limited Arts Opportunities</span>
+            <span class="node-meta">
+                ID: 235 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 45:</strong><ul class='quotes-list'><li>'NUS hopes to expand the number of eligible groups'</li><li>'...flexible academic recognition will benefit students pursuing creativity-focused careers.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Freshman Transition Challenges</span>
+            <span class="node-meta">
+                ID: 243 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 46:</strong><ul class='quotes-list'><li>strong first-year experiences shape students’ attitudes and performance throughout their university years.</li><li>Ms Dewi Wulandari... initially found it challenging to manage course registration and explore extracurriculars.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Collaborative Responses to Global and Regional Challenges</span>
+            <span class="node-meta">
+                ID: 256 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Rising Asian Institutions</span>
+            <span class="node-meta">
+                ID: 178 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 33:</strong><ul class='quotes-list'><li>Singapore's reputation as one of the world's leading hubs for research and innovation</li><li>its ability to attract top academic and business talent</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Collaborative Efforts in Addressing Global Challenges</span>
+            <span class="node-meta">
+                ID: 260 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Collaboration Between Institutions</span>
+            <span class="node-meta">
+                ID: 259 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 49:</strong><ul class='quotes-list'><li>the institutions will establish a research hub called the NTU–Imperial Health, Sustainability and Technology Hub</li><li>the pair have been working together for some time</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Global Challenges and Supply Chain Vulnerabilities</span>
+            <span class="node-meta">
+                ID: 266 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Global Challenges</span>
+            <span class="node-meta">
+                ID: 255 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 48:</strong><ul class='quotes-list'><li>the expansion of joint research activities between NTU and Imperial that aim to tackle global challenges</li><li>the hub will enable UK and Singaporean scientists to work together for the benefit of society</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">External developments in food supply chain</span>
+            <span class="node-meta">
+                ID: 265 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 50:</strong><ul class='quotes-list'><li>Singapore is vulnerable to external developments in the global food supply chain.</li><li>Considering our space and resource constraints.</li></ul></div></div>
+    </div></div></div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="function-section">
+                <div class="function-header" onclick="toggleFunction(this)">
+                    <div>
+                        <div class="function-title">Moral Evaluation</div>
+                        <div class="function-description">Codes that express values, judgments, or evaluations</div>
+                    </div>
+                    <div>
+                        <div class="function-stats">
+                            67 codes | 
+                            Max depth: 2 | 
+                            Roots: 34
+                        </div>
+                        <div class="function-toggle">▼</div>
+                    </div>
+                </div>
+                <div class="function-content">
+                    <div class="tree-container">
+        
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Educational Mission and Values</span>
+            <span class="node-meta">
+                ID: 3 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 1:</strong><ul class='quotes-list'><li>This is a testament to our capabilities and commitment to providing a world-class and interdisciplinary education</li><li>to nurture agile and resilient graduates with diverse skills and knowledge for an ever-changing world</li><li>who remain deeply committed to flying the flag of our distinguished quality of education and creating positive impact in the classroom and beyond</li><li>This unprecedented milestone marks a remarkable moment for Asian higher education</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Education, Employment, and Societal Needs</span>
+            <span class="node-meta">
+                ID: 17 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Importance of Societal Responsibility</span>
+            <span class="node-meta">
+                ID: 30 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Societal Needs and Innovation Impact</span>
+            <span class="node-meta">
+                ID: 35 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Importance of Understanding Societal Needs</span>
+            <span class="node-meta">
+                ID: 16 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 4:</strong><ul class='quotes-list'><li>students need to fall in love with the problem, rather than the solution, to have a deep understanding of the kind of challenges and the needs of the society.</li><li>even with the most amazing technological innovation, human needs and challenges have to be addressed.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education and Institutions</span>
+            <span class="node-meta">
+                ID: 41 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value in Society</span>
+            <span class="node-meta">
+                ID: 47 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of strengthening the non-profit sector</span>
+            <span class="node-meta">
+                ID: 46 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 10:</strong><ul class='quotes-list'><li>'It is also crucial in developing capabilities in the non-profit sector.'</li><li>'The launch of the Centre of Excellence for Social Good is indeed timely.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value of Education and Skills</span>
+            <span class="node-meta">
+                ID: 54 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 53 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 11:</strong><ul class='quotes-list'><li>you cannot outsource your computing technology</li><li>learning is not all about books... Most of all, you should have a passion for computing and a desire to make a difference in the world</li></ul></div><div class='article-evidence'><strong>Article 30:</strong><ul class='quotes-list'><li>Tech skills are still in demand... It's not the frenzy we saw in the pandemic.</li><li>The skills we have as computing science graduates are also quite transferrable.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education</span>
+            <span class="node-meta">
+                ID: 64 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Evaluations</span>
+            <span class="node-meta">
+                ID: 71 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Educational Perspectives</span>
+            <span class="node-meta">
+                ID: 25 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Objective Learning</span>
+            <span class="node-meta">
+                ID: 70 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 14:</strong><ul class='quotes-list'><li>should be seen as objective and not pushing a certain viewpoint</li><li>students are encouraged to disagree with one another</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Educational reform is essential</span>
+            <span class="node-meta">
+                ID: 76 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 15:</strong><ul class='quotes-list'><li>'prospective students can opt for direct admission to about 70 new double major or major-minor combinations'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Moral Evaluation in Graduate Experiences</span>
+            <span class="node-meta">
+                ID: 84 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education</span>
+            <span class="node-meta">
+                ID: 91 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Moral Evaluations of Educational Outcomes</span>
+            <span class="node-meta">
+                ID: 97 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Dual Degrees</span>
+            <span class="node-meta">
+                ID: 96 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 18:</strong><ul class='quotes-list'><li>a business and computing double degree can help graduates to 'quickly understand how and where technology can improve the financial services'</li><li>the gaps in the industry that need to be filled... include the areas of data analytics and cyber security</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Valuing personal interests</span>
+            <span class="node-meta">
+                ID: 104 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 20:</strong><ul class='quotes-list'><li>personal interests come first for them</li><li>They do not have to worry about supporting their parents</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Values and Achievements</span>
+            <span class="node-meta">
+                ID: 121 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of universities</span>
+            <span class="node-meta">
+                ID: 40 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 9:</strong><ul class='quotes-list'><li>the Covid-19 global pandemic has reinforced to the entire world the important role and significant value of universities for societies.</li><li>young Asian universities such as NTU are punching above their weight in creating new knowledge and technologies and in benefiting society.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Pride in Educational Achievements</span>
+            <span class="node-meta">
+                ID: 120 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 23:</strong><ul class='quotes-list'><li>Singapore has the best higher education system in Asia</li><li>Singapore ranked higher than Hong Kong, China and Japan</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Expectations of Interaction</span>
+            <span class="node-meta">
+                ID: 126 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Unfulfilled Expectations</span>
+            <span class="node-meta">
+                ID: 21 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 5:</strong><ul class='quotes-list'><li>I expected it to be more interactive and fun.</li><li>It felt very artificial and forced to me.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of In-person Interaction</span>
+            <span class="node-meta">
+                ID: 125 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 24:</strong><ul class='quotes-list'><li>there's a sense of community that cannot be replicated online</li><li>an online event would not give freshmen the full experience, and lacked the excitement and fun we wanted them to have</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Innovation and Sustainability</span>
+            <span class="node-meta">
+                ID: 132 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Moral Evaluations of Global Issues</span>
+            <span class="node-meta">
+                ID: 137 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Importance of addressing global challenges</span>
+            <span class="node-meta">
+                ID: 29 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 7:</strong><ul class='quotes-list'><li>to make impact in the real world</li><li>to impose early intervention</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Urgency of Action Against Climate Change</span>
+            <span class="node-meta">
+                ID: 136 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 26:</strong><ul class='quotes-list'><li>the new programme has come at a time of climate emergency</li><li>countries must take more ambitious action to cut emissions and limit global warming to 1.5 deg C.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Values in Research and Industry Ethics</span>
+            <span class="node-meta">
+                ID: 142 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 141 | Evidence: 8 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 27:</strong><ul class='quotes-list'><li>a testament to its commitment to deepening interdisciplinary research that benefits mankind.</li><li>we are proud that our research proves to have strong translational impact in pushing boundaries of innovation.</li></ul></div><div class='article-evidence'><strong>Article 36:</strong><ul class='quotes-list'><li>Our commitment to excellence in both education and research has also been strong</li><li>they also contribute significantly to society</li></ul></div><div class='article-evidence'><strong>Article 40:</strong><ul class='quotes-list'><li>strong recognition of our Asian and global approach to education and research</li><li>established itself as the role model for the entire continent</li></ul></div><div class='article-evidence'><strong>Article 48:</strong><ul class='quotes-list'><li>will support both universities as we pursue research aimed at tackling some of humanity’s grand challenges</li><li>the hub will enable UK and Singaporean scientists to work together for the benefit of society</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Internships</span>
+            <span class="node-meta">
+                ID: 148 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 28:</strong><ul class='quotes-list'><li>about three in 10 of such stints - which vary from 10 to 20 weeks or longer - were converted into full-time job offers.</li><li>NTU said the university is exploring how to open up industry connections that it already has to students.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Inefficiency in Communication</span>
+            <span class="node-meta">
+                ID: 153 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 29:</strong><ul class='quotes-list'><li>These questions... make Assistant Professor Leonard Ng shake his head.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value of Contributions</span>
+            <span class="node-meta">
+                ID: 165 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Educational Contributions</span>
+            <span class="node-meta">
+                ID: 12 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of local contribution</span>
+            <span class="node-meta">
+                ID: 164 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 31:</strong><ul class='quotes-list'><li>educating these young people to have a sense of responsibility towards the community and society.</li><li>Prof Kong... academics write that it is a terrible thing to work with policymakers, you're sleeping with the devil.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Skill Development and Moral Evaluation</span>
+            <span class="node-meta">
+                ID: 173 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 83 | Evidence: 6 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 16:</strong><ul class='quotes-list'><li>develop a global perspective and mindset</li><li>qualities desired by many employers</li></ul></div><div class='article-evidence'><strong>Article 19:</strong><ul class='quotes-list'><li>employers regard graduates with overseas stints as 'less parochial, more broad-minded, resourceful and sensitive to intercultural issues'</li><li>Human resource professionals...say it is not the destination, but what a student has gained that gives him an edge.</li></ul></div><div class='article-evidence'><strong>Article 21:</strong><ul class='quotes-list'><li>graduates with more balanced perspectives</li><li>help them address global issues differently</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Valuable Skill Development</span>
+            <span class="node-meta">
+                ID: 172 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 32:</strong><ul class='quotes-list'><li>He picked up valuable soft skills from his internship at Rialto, a Belgian real-estate start-up.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Benefits of Diversity</span>
+            <span class="node-meta">
+                ID: 188 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Positive Impact of Diversity</span>
+            <span class="node-meta">
+                ID: 187 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 35:</strong><ul class='quotes-list'><li>This constitutes a progressive step for SMU</li><li>would help meet the expanding aspirations of young Singaporeans</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Moral Evaluations in Education</span>
+            <span class="node-meta">
+                ID: 205 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 11 | Evidence: 10 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 3:</strong><ul class='quotes-list'><li>Graduates were 'happy' to find jobs</li><li>I enjoy finding the best engineering solutions that will improve lives</li></ul></div><div class='article-evidence'><strong>Article 12:</strong><ul class='quotes-list'><li>Graduates from SMU emerged tops</li><li>the overall mean gross monthly salary among fresh graduates higher than those of the Class of 2015</li></ul></div><div class='article-evidence'><strong>Article 22:</strong><ul class='quotes-list'><li>there is value in hiring interns even during this period</li><li>I didn't think it was fair to cancel on the interns</li></ul></div><div class='article-evidence'><strong>Article 34:</strong><ul class='quotes-list'><li>'The overall and full-time permanent-employment rates for 2014 have stayed largely stable, compared to those in 2013.'</li><li>'mean gross monthly salary among last year's fresh graduates in full-time permanent employment was S$3,333, up from S$3,229 in 2013'</li></ul></div><div class='article-evidence'><strong>Article 37:</strong><ul class='quotes-list'><li>employers choose the right person for a role, not necessarily the best one</li><li>it is the graduate's performance on the job that matters in the long haul</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education Accessibility</span>
+            <span class="node-meta">
+                ID: 204 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 38:</strong><ul class='quotes-list'><li>'we want to send a message... that they should never be shy or have second thoughts about going to university'</li><li>'the grant will allow her to put more time into her studies'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Importance of Privacy Protection</span>
+            <span class="node-meta">
+                ID: 208 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 39:</strong><ul class='quotes-list'><li>thus ensuring their privacy.</li><li>this tech, when developed, will enable the sharing of data without compromising privacy.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Values in Education and Industry</span>
+            <span class="node-meta">
+                ID: 215 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 131 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 25:</strong><ul class='quotes-list'><li>Students are looking for 'a better way to live on earth'.</li><li>companies paying more attention to sustainability and ESG (environmental, social and governance)</li></ul></div><div class='article-evidence'><strong>Article 50:</strong><ul class='quotes-list'><li>profit is not the only objective, but also social inclusion and sustainability.</li><li>the world is a different place... there are many new entrepreneurial nodes in the world.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of innovation and adaptability</span>
+            <span class="node-meta">
+                ID: 214 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 41:</strong><ul class='quotes-list'><li>NUS remains 'one of the most innovative and dynamic universities in the world'</li><li>the nature of work is changing rapidly, and universities will need to innovate and evolve.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Impact of Innovation in Social Context</span>
+            <span class="node-meta">
+                ID: 220 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Innovation for Social Impact</span>
+            <span class="node-meta">
+                ID: 34 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 8:</strong><ul class='quotes-list'><li>'To see inventions (like this) go into the world and impact people is something that keeps me going'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Positive Impact of RIE2020</span>
+            <span class="node-meta">
+                ID: 219 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 42:</strong><ul class='quotes-list'><li>many in the research community have reacted positively to Research, Innovation and Enterprise (RIE) 2020</li><li>I am pleased to see RIE2020 respond emphatically to calls for strengthening our entrepreneurial ecosystem</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Inclusivity and Fairness in Education</span>
+            <span class="node-meta">
+                ID: 227 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of diverse talents</span>
+            <span class="node-meta">
+                ID: 7 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 2:</strong><ul class='quotes-list'><li>It adds to the vibrancy of the NUS student body</li><li>allowing for greater diversity on campus and fostering inclusion</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Exclusivity and fairness</span>
+            <span class="node-meta">
+                ID: 226 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 43:</strong><ul class='quotes-list'><li>I don't think GPA is a good reflection of your quality of work</li><li>organising exclusive career fairs could 'send the wrong message'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Mollycoddling concerns</span>
+            <span class="node-meta">
+                ID: 230 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 44:</strong><ul class='quotes-list'><li>Are young Singaporeans too mollycoddled?</li><li>pandering to populist demands</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value of Artistic Engagement in Education</span>
+            <span class="node-meta">
+                ID: 238 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Arts Education</span>
+            <span class="node-meta">
+                ID: 63 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 13:</strong><ul class='quotes-list'><li>The high standard of programming means that out of 23 student groups under the centre's purview, only 11 are putting up shows this year.</li><li>We give our students a process where they can learn from their artistic directors and international practitioners.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Valuing Artistic Engagement</span>
+            <span class="node-meta">
+                ID: 237 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 45:</strong><ul class='quotes-list'><li>'grading is a form of acknowledgment for his efforts and recognition for Chinese dance as an art form.'</li><li>'having flexible academic recognition will benefit students pursuing creativity-focused careers.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value of Education and Growth</span>
+            <span class="node-meta">
+                ID: 245 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Holistic Education</span>
+            <span class="node-meta">
+                ID: 24 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 6:</strong><ul class='quotes-list'><li>'Oftentimes, the really valuable lessons in life take place outside of the classroom.'</li><li>'What’s important is for the individual to see it as an invitation to make sense of your own experiences.'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Personal Growth</span>
+            <span class="node-meta">
+                ID: 244 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 46:</strong><ul class='quotes-list'><li>helping support their mental well-being.</li><li>aims to build an active and inclusive community through shared athletic experiences.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Moral Evaluation in Education</span>
+            <span class="node-meta">
+                ID: 250 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 90 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 17:</strong><ul class='quotes-list'><li>...these tools can help to demystify complex contexts and make it easy for students to comprehend them, and make learning engaging and interactive.</li><li>The learning pedagogy is innovative, with no lectures, and team-based learning.</li></ul></div><div class='article-evidence'><strong>Article 33:</strong><ul class='quotes-list'><li>maintained a strong focus on enhancing the value and impact of its work</li><li>pioneers fresh approaches to education</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Value of Education</span>
+            <span class="node-meta">
+                ID: 262 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education and Community Engagement</span>
+            <span class="node-meta">
+                ID: 249 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 47:</strong><ul class='quotes-list'><li>'Universities should not be ivory towers. They should instead be catalysts to create a better world.'</li><li>'Reflect on the communities around you and what they mean to you.'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Value of Education and Research</span>
+            <span class="node-meta">
+                ID: 261 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 49:</strong><ul class='quotes-list'><li>the hub will enable UK and Singaporean scientists to work together for the benefit of society</li><li>research aimed at tackling some of humanity’s grand challenges</li></ul></div></div>
+    </div></div></div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="function-section">
+                <div class="function-header" onclick="toggleFunction(this)">
+                    <div>
+                        <div class="function-title">Treatment Advocacy</div>
+                        <div class="function-description">Codes that suggest solutions, treatments, or recommendations</div>
+                    </div>
+                    <div>
+                        <div class="function-stats">
+                            67 codes | 
+                            Max depth: 2 | 
+                            Roots: 38
+                        </div>
+                        <div class="function-toggle">▼</div>
+                    </div>
+                </div>
+                <div class="function-content">
+                    <div class="tree-container">
+        
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Continued Excellence Strategy</span>
+            <span class="node-meta">
+                ID: 4 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 1:</strong><ul class='quotes-list'><li>commitment to providing a world-class and interdisciplinary education to nurture agile and resilient graduates</li><li>dedication to research excellence, innovation and sustainability</li><li>creating positive impact in the classroom and beyond</li><li>amongst many other prestigious institutions worldwide</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Redefining the Role of Design</span>
+            <span class="node-meta">
+                ID: 18 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 4:</strong><ul class='quotes-list'><li>the role of design in society has to be redefined.</li><li>there is a worldwide need for talent in the design and technology field to tackle our most pressing problems.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Optimism for Future Engagement</span>
+            <span class="node-meta">
+                ID: 22 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 5:</strong><ul class='quotes-list'><li>I'm very much looking forward to social events as well as taking part in competitions since these would now be in-person.</li><li>I'd like to get involved in debate competitions and also get a diving licence.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Implementation of Co-Curricular Transcripts</span>
+            <span class="node-meta">
+                ID: 26 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 6:</strong><ul class='quotes-list'><li>'The graduating class of 2025 will be the first to receive this transcript.'</li><li>'These experiences can be carefully and intentionally curated and aligned with clearly defined learning objectives.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Request for Private Water Bodies</span>
+            <span class="node-meta">
+                ID: 36 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 8:</strong><ul class='quotes-list'><li>'My only request is a private water body (to trial the garden in)'</li><li>'That will be really awesome for us because we need to demonstrate a pilot'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Advocacy and Support in Higher Education</span>
+            <span class="node-meta">
+                ID: 43 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Collaborative Efforts in Treatment Advocacy</span>
+            <span class="node-meta">
+                ID: 49 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 31 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 7:</strong><ul class='quotes-list'><li>NUS will fund interdisciplinary studies</li><li>invest in projects covering issues such as sustainability, disease outbreak preparedness</li></ul></div><div class='article-evidence'><strong>Article 26:</strong><ul class='quotes-list'><li>The Climate Transformation Programme, which will be led by NTU's Earth Observatory of Singapore (EOS), will look to create climate solutions and educate future leaders to form a resilient and sustaina...</li><li>interdisciplinary studies -- bringing together scientists, geologists, social scientists and business students -- will be required to find solutions.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Collaboration and education</span>
+            <span class="node-meta">
+                ID: 48 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 10:</strong><ul class='quotes-list'><li>'The centre will bring together expertise from the non-profit, public and private sectors to collaborate.'</li><li>'There are calls for increasing partnerships and coordination to provide services on the ground.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Support Initiatives</span>
+            <span class="node-meta">
+                ID: 56 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 55 | Evidence: 6 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 11:</strong><ul class='quotes-list'><li>local universities ramping up related course offerings and vacancies</li><li>Parents are also seeing the benefit of exposing their children to skills like computational thinking at a young age</li></ul></div><div class='article-evidence'><strong>Article 14:</strong><ul class='quotes-list'><li>has led some universities to increase the enrolment or frequency of the course</li><li>expanded this to 300 places for each semester this year</li></ul></div><div class='article-evidence'><strong>Article 18:</strong><ul class='quotes-list'><li>the demand for complex technology and services to support such changes creates the demand for dual-degree and combined-skills graduates</li><li>said Ms Shirley Wong, chairman of the Singapore infocomm Technology Federation, include the areas of data analytics and cyber security</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Graduate Employment Support Mechanisms</span>
+            <span class="node-meta">
+                ID: 60 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Advocacy</span>
+            <span class="node-meta">
+                ID: 66 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Advocacy</span>
+            <span class="node-meta">
+                ID: 78 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Internship Programs</span>
+            <span class="node-meta">
+                ID: 86 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Continued focus on internships</span>
+            <span class="node-meta">
+                ID: 59 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 12:</strong><ul class='quotes-list'><li>one in four landed full-time jobs through internships</li><li>nearly four in five (78.2 per cent) completed two or more internships</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Adopting Innovative Teaching Methods</span>
+            <span class="node-meta">
+                ID: 92 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 17:</strong><ul class='quotes-list'><li>They are providing new degree options, making more use of technology in classrooms.</li><li>The SMU School of Law... uses creative tools, such as animation and games, in the classrooms.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Encouraging Diverse Educational Opportunities</span>
+            <span class="node-meta">
+                ID: 101 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 19:</strong><ul class='quotes-list'><li>Some choose universities in Russia, Brazil and Kazakhstan, which can cost less than half of those in Germany or the United States.</li><li>Professor Tan Kang Hai...pointed out: 'A South Korean university can offer a similar course to that of University of California, Berkeley, at one-third the price.'</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Recommendations for employer policies</span>
+            <span class="node-meta">
+                ID: 105 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 20:</strong><ul class='quotes-list'><li>companies need to do more to design staff retention policies</li><li>more firms should look at allowing staff members to go on unpaid leave</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Inclusive Education Strategies</span>
+            <span class="node-meta">
+                ID: 109 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Promoting flexible study combinations</span>
+            <span class="node-meta">
+                ID: 108 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 21:</strong><ul class='quotes-list'><li>should promote flexible study combinations</li><li>NUS wants to expand this model through the new college</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Internship Opportunities Advocacy</span>
+            <span class="node-meta">
+                ID: 115 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Educational Development Initiatives</span>
+            <span class="node-meta">
+                ID: 123 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Introduction of new programmes</span>
+            <span class="node-meta">
+                ID: 77 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 15:</strong><ul class='quotes-list'><li>'New degree programmes, curriculum changes, and a common course - all these at Singapore's six universities in the coming academic year.'</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 122 | Evidence: 8 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 23:</strong><ul class='quotes-list'><li>the Singaporean Government inaugurated the Singapore Universities Fund, with a view to avoiding... funding cuts</li><li>consistent improvements made by Singaporean institutions</li></ul></div><div class='article-evidence'><strong>Article 33:</strong><ul class='quotes-list'><li>rapidly ramping up its collaborations with the world's top multinationals</li><li>enhancing the value and impact of its work</li></ul></div><div class='article-evidence'><strong>Article 38:</strong><ul class='quotes-list'><li>'the scheme offers grants and scholarships to ensure that the tuition fees of its financially needy Singaporean undergraduates are fully covered'</li><li>'There is no cap on the total number of beneficiaries who can receive the grant'</li></ul></div><div class='article-evidence'><strong>Article 40:</strong><ul class='quotes-list'><li>NUS will strive to ensure that its education and research remain innovative and relevant</li><li>the backing of government prepared to invest in higher education</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Internship Support Strategies</span>
+            <span class="node-meta">
+                ID: 128 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Support for Remote Internships</span>
+            <span class="node-meta">
+                ID: 114 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 22:</strong><ul class='quotes-list'><li>universities are monitoring the impact of the pandemic on work opportunities</li><li>NUS is also seeking remote internships with overseas partners</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Embrace In-person Orientation</span>
+            <span class="node-meta">
+                ID: 127 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 24:</strong><ul class='quotes-list'><li>the return of in-person activities has been welcomed by students</li><li>the organising committee of the NUS Business Camp had to plan for both online and in-person scenarios</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Curriculum Reform in Accountancy</span>
+            <span class="node-meta">
+                ID: 133 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 25:</strong><ul class='quotes-list'><li>we need to look at our curriculum, professors, value proposition, and whether our accountancy and business degrees produce students who can think, solve problems and apply (what they learned) in the r...</li><li>ESG-related topics should be better integrated into the curriculum.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Advocacy Activities</span>
+            <span class="node-meta">
+                ID: 144 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">University Support and Advocacy</span>
+            <span class="node-meta">
+                ID: 150 | Evidence: 0 quotes
+                
+            </span>
+        </div>
+        
+    </div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">AI Chatbots as Solutions</span>
+            <span class="node-meta">
+                ID: 154 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 29:</strong><ul class='quotes-list'><li>prompting him and a team of lecturers from NTU's School of Materials Science and Engineering (MSE) to develop Leodar, an AI chatbot that doubles as a teaching and administrative assistant.</li><li>NTU is drawing inspiration from Leodar's success and will apply its approach to AI to future chatbots used across the rest of the university.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Graduate Support Initiatives</span>
+            <span class="node-meta">
+                ID: 160 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Continuous Upskilling</span>
+            <span class="node-meta">
+                ID: 159 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 30:</strong><ul class='quotes-list'><li>We encourage tech graduates to adopt an adaptive mindset and keep their skills updated as technology evolves rapidly.</li><li>It also emphasised to me the need to upskill even after graduation, so that we stay relevant and can switch to other roles if necessary.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Academic Support and Collaboration</span>
+            <span class="node-meta">
+                ID: 167 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Industry Connections and Support</span>
+            <span class="node-meta">
+                ID: 149 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 28:</strong><ul class='quotes-list'><li>NTU said the university is exploring how to open up industry connections that it already has to students.</li><li>The office aims to ensure timely intervention, improve counselling services, among other things.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Internship Program Development</span>
+            <span class="node-meta">
+                ID: 175 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Encouraging Overseas Internship Programs</span>
+            <span class="node-meta">
+                ID: 85 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 16:</strong><ul class='quotes-list'><li>launched an Overseas Integrated Work Study Programme</li><li>there are plans to extend it to other degree programmes</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Graduate Employment Support</span>
+            <span class="node-meta">
+                ID: 183 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Support for Graduates</span>
+            <span class="node-meta">
+                ID: 13 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 3:</strong><ul class='quotes-list'><li>extensive career guidance and job matching</li><li>tapping industry partners to curate suitable job placement and apprenticeship opportunities</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Continued Monitoring</span>
+            <span class="node-meta">
+                ID: 182 | Evidence: 1 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 34:</strong><ul class='quotes-list'><li>'The annual survey also found that for individuals in full-time permanent employment, those who graduated in 2014 drew higher salaries than those who graduated in 2013.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Implementation of Liberal Arts Programs</span>
+            <span class="node-meta">
+                ID: 189 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 35:</strong><ul class='quotes-list'><li>plans to set up a school of humanities</li><li>would add to the efforts underway to build a more diversified and creative workforce</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Advocacy for Research and Talent</span>
+            <span class="node-meta">
+                ID: 195 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Attracting Talent</span>
+            <span class="node-meta">
+                ID: 194 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 36:</strong><ul class='quotes-list'><li>We have been very successful in attracting top talent from Singapore and from all over the world</li><li>in order to have impact, we need to make sure that research and education... contribute significantly to society</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">University Advocacy</span>
+            <span class="node-meta">
+                ID: 200 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Support for universities</span>
+            <span class="node-meta">
+                ID: 42 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 9:</strong><ul class='quotes-list'><li>calls to pause these rankings.</li><li>NTU Singapore is proud that our dynamic campus community has played its part, in collaboration with many others, in supporting the global, regional and national responses to the pandemic.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Enhanced Global Brand Appeal</span>
+            <span class="node-meta">
+                ID: 199 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 37:</strong><ul class='quotes-list'><li>the stellar performance in the rankings would at least enhance the NUS and NTU brands globally</li><li>more students, including foreign ones, to enrol at them</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Development of Privacy Technologies</span>
+            <span class="node-meta">
+                ID: 209 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 39:</strong><ul class='quotes-list'><li>N-CRiPT will work on preventing privacy leaks and coming up with solutions to protect data throughout its life cycle</li><li>SCRIPTS will develop ways for data to be collected and still protect the identity of individuals.</li></ul></div></div>
+    </div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Support and Innovation in Higher Education</span>
+            <span class="node-meta">
+                ID: 217 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Need for innovation in universities</span>
+            <span class="node-meta">
+                ID: 216 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 41:</strong><ul class='quotes-list'><li>universities will need to innovate and evolve to effectively respond to the Fourth Industrial Revolution</li><li>NUS continues to be recognised among leading universities in the world.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Strategic Research and Innovation Advocacy</span>
+            <span class="node-meta">
+                ID: 222 | Evidence: 0 quotes
+                 | Children: 1
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Strategic Research Plans</span>
+            <span class="node-meta">
+                ID: 143 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 27:</strong><ul class='quotes-list'><li>catalysing high-impact research and translating it into enterprising innovations that benefit industry and society are core tenets of the NTU 2025 five-year strategic plan.</li><li>the university is committed to staying the course in delivering research excellence that brings about tangible impact.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Student Well-Being Initiatives</span>
+            <span class="node-meta">
+                ID: 232 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 8 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 2:</strong><ul class='quotes-list'><li>we are giving more students the opportunity to be considered beyond their grades</li><li>NUS has launched similar nomination schemes</li></ul></div><div class='article-evidence'><strong>Article 43:</strong><ul class='quotes-list'><li>We will review students' feedback, including making NTUtopia open to all undergraduates</li><li>we encourage employers to look holistically, beyond grades, in their hiring decisions</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Easing academic pressures</span>
+            <span class="node-meta">
+                ID: 231 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 44:</strong><ul class='quotes-list'><li>the idea is to reduce the pressure on students</li><li>the shift away from a strict focus on grades</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Arts Initiatives in Education</span>
+            <span class="node-meta">
+                ID: 240 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Diverse Programming Solutions</span>
+            <span class="node-meta">
+                ID: 65 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 13:</strong><ul class='quotes-list'><li>Now, it has concerts from its 26 performing arts groups spread out over the two semesters.</li><li>Through our programme of exhibitions, public events, residencies and research, we would like to engage NTU students with the complexities of cultural production in a global world.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Arts For All Initiative</span>
+            <span class="node-meta">
+                ID: 239 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 45:</strong><ul class='quotes-list'><li>'part of NUS CFA’s broader 'Arts For All' move to promote arts participation and interdisciplinary learning.'</li><li>'...hopes the initiative sustains student interest in the arts and improves accessibility.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">NUS Student Support Initiatives</span>
+            <span class="node-meta">
+                ID: 247 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Expansion of Internship Programs</span>
+            <span class="node-meta">
+                ID: 174 | Evidence: 3 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 32:</strong><ul class='quotes-list'><li>NUS plans to increase its annual intake of students from 200 to 300, and expand the number of locations in the programme from six to eight in the next few years.</li></ul></div><div class='article-evidence'><strong>Article 50:</strong><ul class='quotes-list'><li>The National University of Singapore (NUS) will add more business and innovation nodes.</li><li>NUS is also looking to draw more of its postgraduate research students.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Implementation of NUSOne</span>
+            <span class="node-meta">
+                ID: 246 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 46:</strong><ul class='quotes-list'><li>NUS will also introduce a new 'Transition to Higher Education' programme offering freshmen essential skills and resources.</li><li>The hostel will accommodate up to 600 residents, with half of the places reserved for athletes and those with sporting excellence.</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Community Advocacy Initiatives</span>
+            <span class="node-meta">
+                ID: 252 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Encouragement of applied research</span>
+            <span class="node-meta">
+                ID: 166 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 31:</strong><ul class='quotes-list'><li>NTU recently launched a fund to support community projects and student-led social enterprises.</li><li>universities said they will evolve with Singapore to meet its changing needs.</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Encouragement for Community Action</span>
+            <span class="node-meta">
+                ID: 251 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 47:</strong><ul class='quotes-list'><li>'I urge you to continue to change our society and the world for the better.'</li><li>'The $1.1 million will go toward financial aid for students and support for university colleges.'</li></ul></div></div>
+    </div></div></div>
+    <div class="tree-node root-node has-children" data-level="0">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">▼</span>
+            <span class="node-name">Collaboration and Research Development</span>
+            <span class="node-meta">
+                ID: 258 | Evidence: 0 quotes
+                 | Children: 2
+            </span>
+        </div>
+        
+    <div class='children-container'>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name">Focus on Collaboration and Innovation</span>
+            <span class="node-meta">
+                ID: 221 | Evidence: 2 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 42:</strong><ul class='quotes-list'><li>the collaboration fosters the development of innovative technological solutions to healthcare challenges</li><li>I certainly hope to find opportunities within RIE2020 to grow and establish NTU as the complexity science hub in Asia</li></ul></div></div>
+    </div>
+    <div class="tree-node" data-level="1">
+        <div class="node-header" onclick="toggleNode(this)">
+            <span class="node-toggle">●</span>
+            <span class="node-name"></span>
+            <span class="node-meta">
+                ID: 257 | Evidence: 4 quotes
+                
+            </span>
+        </div>
+        <div class='evidence-details' style='display: none;'><div class='article-evidence'><strong>Article 48:</strong><ul class='quotes-list'><li>establish a research hub called the NTU–Imperial Health, Sustainability and Technology Hub</li><li>the hub will enable UK and Singaporean scientists to work together for the benefit of society</li></ul></div><div class='article-evidence'><strong>Article 49:</strong><ul class='quotes-list'><li>the new research hub will help seed the most ambitious projects and ideas in healthcare, sustainability and technology</li><li>allowing a wider group of NTU students to spend time at Imperial under joint programmes</li></ul></div></div>
+    </div></div></div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    
+    <script>
+        function toggleFunction(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.function-toggle');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                toggle.textContent = '▼';
+                toggle.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('expanded');
+                toggle.textContent = '▲';
+                toggle.style.transform = 'rotate(180deg)';
+            }
+        }
+        
+        function toggleNode(header) {
+            const node = header.parentElement;
+            const evidenceDetails = node.querySelector('.evidence-details');
+            const childrenContainer = node.querySelector('.children-container');
+            const toggle = header.querySelector('.node-toggle');
+            
+            // Toggle evidence details
+            if (evidenceDetails) {
+                if (evidenceDetails.style.display === 'none' || evidenceDetails.style.display === '') {
+                    evidenceDetails.style.display = 'block';
+                } else {
+                    evidenceDetails.style.display = 'none';
+                }
+            }
+            
+            // Toggle children container
+            if (childrenContainer) {
+                if (childrenContainer.style.display === 'none') {
+                    childrenContainer.style.display = 'block';
+                    toggle.textContent = '▼';
+                } else {
+                    childrenContainer.style.display = 'none';
+                    toggle.textContent = '▶';
+                }
+            }
+        }
+        
+        // Initialize all function sections as collapsed
+        document.addEventListener('DOMContentLoaded', function() {
+            const functionContents = document.querySelectorAll('.function-content');
+            functionContents.forEach(content => {
+                content.classList.add('expanded'); // Start expanded
+            });
+        });
+    </script>
+</body>
+</html>
+    

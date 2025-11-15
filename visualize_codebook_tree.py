@@ -28,7 +28,7 @@ def load_codebook(file_path: str) -> Dict[str, Any]:
 
 class CodeNode:
     """Represents a code node in the tree structure."""
-    
+
     def __init__(self, code_data: Dict[str, Any]):
         self.code_id = code_data.get("code_id")
         self.name = code_data.get("name", "Unnamed Code")
@@ -39,19 +39,19 @@ class CodeNode:
         self.parent_code_id = code_data.get("parent_code_id")
         self.children = []
         self.level = 0  # Tree depth level
-        
+
     def add_child(self, child_node):
         """Add a child node."""
         self.children.append(child_node)
         child_node.level = self.level + 1
-        
+
     def get_evidence_count(self):
         """Get total evidence count for this code."""
         total = 0
         for article_quotes in self.evidence.values():
             total += len(article_quotes)
         return total
-    
+
     def get_tree_depth(self):
         """Get maximum depth of tree rooted at this node."""
         if not self.children:
@@ -62,22 +62,22 @@ class CodeNode:
 def build_code_trees(codebook_data: Dict[str, Any]) -> Dict[str, List[CodeNode]]:
     """Build hierarchical trees organized by frame function."""
     codes = codebook_data.get("codes", {})
-    
+
     # Create all nodes first
     all_nodes = {}
     for code_id, code_data in codes.items():
         node = CodeNode(code_data)
         all_nodes[code_id] = node
-    
+
     # Build parent-child relationships
     root_nodes_by_function = {
         "PROBLEM_DEFINITION": [],
         "CAUSAL_ATTRIBUTION": [],
         "MORAL_EVALUATION": [],
         "TREATMENT_ADVOCACY": [],
-        "OTHER": []
+        "OTHER": [],
     }
-    
+
     for code_id, node in all_nodes.items():
         if node.parent_code_id and str(node.parent_code_id) in all_nodes:
             # This node has a parent
@@ -90,7 +90,7 @@ def build_code_trees(codebook_data: Dict[str, Any]) -> Dict[str, List[CodeNode]]
                 root_nodes_by_function[function].append(node)
             else:
                 root_nodes_by_function["OTHER"].append(node)
-    
+
     return root_nodes_by_function
 
 
@@ -101,48 +101,48 @@ def get_tree_statistics(trees: Dict[str, List[CodeNode]]) -> Dict[str, Any]:
         "root_codes": 0,
         "max_depth": 0,
         "codes_by_level": {},
-        "function_stats": {}
+        "function_stats": {},
     }
-    
+
     for function, roots in trees.items():
         if not roots:  # Skip empty functions
             continue
-            
+
         function_stats = {
             "total_codes": 0,
             "root_codes": len(roots),
             "max_depth": 0,
-            "codes_by_level": {}
+            "codes_by_level": {},
         }
-        
+
         stats["root_codes"] += len(roots)
-        
+
         # Traverse each tree to collect statistics
         for root in roots:
             tree_depth = root.get_tree_depth()
             function_stats["max_depth"] = max(function_stats["max_depth"], tree_depth)
             stats["max_depth"] = max(stats["max_depth"], tree_depth)
-            
+
             # Count nodes at each level
             def count_levels(node, level=0):
                 function_stats["total_codes"] += 1
                 stats["total_codes"] += 1
-                
+
                 if level not in function_stats["codes_by_level"]:
                     function_stats["codes_by_level"][level] = 0
                 if level not in stats["codes_by_level"]:
                     stats["codes_by_level"][level] = 0
-                    
+
                 function_stats["codes_by_level"][level] += 1
                 stats["codes_by_level"][level] += 1
-                
+
                 for child in node.children:
                     count_levels(child, level + 1)
-            
+
             count_levels(root)
-        
+
         stats["function_stats"][function] = function_stats
-    
+
     return stats
 
 
@@ -150,7 +150,7 @@ def render_tree_node_html(node: CodeNode, is_root: bool = False) -> str:
     """Render a single tree node as HTML."""
     evidence_count = node.get_evidence_count()
     has_children = len(node.children) > 0
-    
+
     # Create evidence details
     evidence_html = ""
     if node.evidence:
@@ -165,13 +165,13 @@ def render_tree_node_html(node: CodeNode, is_root: bool = False) -> str:
                 evidence_html += f"<li>{display_quote}</li>"
             evidence_html += "</ul></div>"
         evidence_html += "</div>"
-    
+
     node_class = "tree-node"
     if is_root:
         node_class += " root-node"
     if has_children:
         node_class += " has-children"
-    
+
     node_html = f"""
     <div class="{node_class}" data-level="{node.level}">
         <div class="node-header" onclick="toggleNode(this)">
@@ -184,20 +184,22 @@ def render_tree_node_html(node: CodeNode, is_root: bool = False) -> str:
         </div>
         {evidence_html}
     """
-    
+
     if has_children:
         node_html += "<div class='children-container'>"
         for child in node.children:
             node_html += render_tree_node_html(child, False)
         node_html += "</div>"
-    
+
     node_html += "</div>"
     return node_html
 
 
-def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[str, Any]) -> str:
+def generate_html_visualization(
+    trees: Dict[str, List[CodeNode]], stats: Dict[str, Any]
+) -> str:
     """Generate interactive HTML visualization with tree structure."""
-    
+
     # Function descriptions
     function_descriptions = {
         "PROBLEM_DEFINITION": "Codes that define and identify problems, issues, or challenges",
@@ -205,7 +207,7 @@ def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[st
         "MORAL_EVALUATION": "Codes that express values, judgments, or evaluations",
         "TREATMENT_ADVOCACY": "Codes that suggest solutions, treatments, or recommendations",
     }
-    
+
     html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -546,12 +548,12 @@ def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[st
             <div class="levels-breakdown">
                 <h3>📊 Codes by Tree Level</h3>
     """
-    
+
     # Add level breakdown
-    if stats['codes_by_level']:
-        max_count = max(stats['codes_by_level'].values())
-        for level in sorted(stats['codes_by_level'].keys()):
-            count = stats['codes_by_level'][level]
+    if stats["codes_by_level"]:
+        max_count = max(stats["codes_by_level"].values())
+        for level in sorted(stats["codes_by_level"].keys()):
+            count = stats["codes_by_level"][level]
             percentage = (count / max_count) * 100
             html += f"""
                 <div class="level-bar">
@@ -562,22 +564,24 @@ def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[st
                     <div class="level-count">{count} codes</div>
                 </div>
             """
-    
+
     html += """
             </div>
         </div>
         
         <div class="content">
     """
-    
+
     # Generate function sections
     for function, roots in trees.items():
         if not roots:  # Skip empty functions
             continue
-            
-        function_stats = stats['function_stats'].get(function, {})
-        description = function_descriptions.get(function, "Other or uncategorized codes")
-        
+
+        function_stats = stats["function_stats"].get(function, {})
+        description = function_descriptions.get(
+            function, "Other or uncategorized codes"
+        )
+
         html += f"""
             <div class="function-section">
                 <div class="function-header" onclick="toggleFunction(this)">
@@ -597,17 +601,17 @@ def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[st
                 <div class="function-content">
                     <div class="tree-container">
         """
-        
+
         # Render trees for this function
         for root in roots:
             html += render_tree_node_html(root, True)
-        
+
         html += """
                     </div>
                 </div>
             </div>
         """
-    
+
     html += f"""
         </div>
     </div>
@@ -666,72 +670,78 @@ def generate_html_visualization(trees: Dict[str, List[CodeNode]], stats: Dict[st
 </body>
 </html>
     """
-    
+
     return html
 
 
-def create_codebook_tree_visualization(codebook_path: str, output_path: str = None) -> str:
+def create_codebook_tree_visualization(
+    codebook_path: str, output_path: str = None
+) -> str:
     """Main function to create tree visualization."""
-    
+
     # Load codebook
     codebook_data = load_codebook(codebook_path)
     if not codebook_data:
         return None
-    
+
     # Build trees
     print("Building code trees...")
     trees = build_code_trees(codebook_data)
-    
+
     # Calculate statistics
     print("Calculating tree statistics...")
     stats = get_tree_statistics(trees)
-    
+
     # Print statistics to console
     print(f"\n📊 Tree Statistics:")
     print(f"Total codes: {stats['total_codes']}")
     print(f"Root codes: {stats['root_codes']}")
     print(f"Child codes: {stats['total_codes'] - stats['root_codes']}")
     print(f"Maximum tree depth: {stats['max_depth']}")
-    
+
     print(f"\n📈 Codes by level:")
-    for level in sorted(stats['codes_by_level'].keys()):
+    for level in sorted(stats["codes_by_level"].keys()):
         print(f"  Level {level}: {stats['codes_by_level'][level]} codes")
-    
+
     print(f"\n🎯 Function breakdown:")
-    for function, function_stats in stats['function_stats'].items():
-        if function_stats['total_codes'] > 0:
-            print(f"  {function}: {function_stats['total_codes']} codes (depth: {function_stats['max_depth']})")
-    
+    for function, function_stats in stats["function_stats"].items():
+        if function_stats["total_codes"] > 0:
+            print(
+                f"  {function}: {function_stats['total_codes']} codes (depth: {function_stats['max_depth']})"
+            )
+
     # Generate HTML
     print("Generating HTML visualization...")
     html_content = generate_html_visualization(trees, stats)
-    
+
     # Save to file
     if not output_path:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_path = f"codebook_tree_visualization_{timestamp}.html"
-    
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_content)
-    
+
     print(f"✅ Tree visualization saved to: {output_path}")
     return output_path
 
 
 if __name__ == "__main__":
     import sys
-    
+
     # Default path
     codebook_path = "data/updated_codebook.json"
-    
+
     # Allow command line argument
     if len(sys.argv) > 1:
         codebook_path = sys.argv[1]
-    
+
     if os.path.exists(codebook_path):
         output_file = create_codebook_tree_visualization(codebook_path)
         if output_file:
-            print(f"\n🌐 Open the file in your browser to view the interactive tree visualization!")
+            print(
+                f"\n🌐 Open the file in your browser to view the interactive tree visualization!"
+            )
     else:
         print(f"❌ Codebook file not found: {codebook_path}")
         print("Usage: python visualize_codebook_tree.py [path_to_codebook.json]")

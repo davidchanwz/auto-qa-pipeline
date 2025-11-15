@@ -102,24 +102,27 @@ CANDIDATE CODE:
 DECISION TASK:
 Analyze these two codes and decide the best operation:
 
-1. MERGE - The codes are essentially the same or similar concept and should be combined. You can optionally update the name if the candidate provides a better conceptualization.
-2. SPLIT - The candidate code represents a distinct subset/aspect of the existing code that would benefit from being separated into two distinct codes
+1. MERGE_TO_EXISTING - Merge candidate into existing code, keeping existing as primary (broader scope maintained)
+2. MERGE_TO_CANDIDATE - Merge existing into candidate, making candidate primary (adopts candidate's focus/name)
 3. CREATE_NEW - Despite similarity, they represent distinct concepts worth keeping separate
-4. NO_ACTION - The existing code already covers this adequately
+4. CREATE_PARENT - Both codes represent specific instances of a broader concept that should become their parent category
+5. NO_ACTION - The existing code already covers this adequately
 
 Consider:
 - Conceptual similarity vs word similarity
 - Evidence quality and uniqueness
 - Whether they represent the same underlying phenomenon vs distinct aspects
 - Whether the candidate represents a meaningful subset that should be split out
-- Value of maintaining separate vs combined codes
+- Whether both codes are specific instances of a broader category that should be created
+- Value of maintaining separate vs combined codes vs hierarchical organization
 
 Respond with ONLY valid JSON:
 {{
-    "operation": "MERGE|SPLIT|CREATE_NEW|NO_ACTION",
+    "operation": "MERGE_TO_EXISTING|MERGE_TO_CANDIDATE|CREATE_NEW|CREATE_PARENT|NO_ACTION",
     "confidence": 0.1-1.0,
     "reasoning": "Brief explanation of your decision",
-    "new_name": "Optional: new name for the code if MERGE operation and name should be updated"
+    "new_name": "Optional: new name for the code if MERGE operation and name should be updated",
+    "parent_name": "Optional: name for the parent category if CREATE_PARENT operation"
 }}"""
 
     def get_decision_schema(self) -> dict:
@@ -129,13 +132,23 @@ Respond with ONLY valid JSON:
             "properties": {
                 "operation": {
                     "type": "string",
-                    "enum": ["MERGE", "SPLIT", "CREATE_NEW", "NO_ACTION"],
+                    "enum": [
+                        "MERGE_TO_EXISTING",
+                        "MERGE_TO_CANDIDATE",
+                        "CREATE_NEW",
+                        "CREATE_PARENT",
+                        "NO_ACTION",
+                    ],
                 },
                 "confidence": {"type": "number", "minimum": 0.1, "maximum": 1.0},
                 "reasoning": {"type": "string"},
                 "new_name": {
                     "type": "string",
                     "description": "Optional: new name for the code if MERGE operation and name should be updated",
+                },
+                "parent_name": {
+                    "type": "string",
+                    "description": "Optional: name for the parent category if CREATE_PARENT operation",
                 },
             },
             "required": ["operation", "confidence", "reasoning"],
@@ -155,8 +168,9 @@ Your expertise includes:
 You analyze pairs of qualitative codes and decide the best operation to maintain a high-quality, well-organized codebook that facilitates meaningful analysis while avoiding redundancy.
 
 Operations available:
-- MERGE: Combine similar/same concepts, optionally updating the name for better clarity
-- SPLIT: Create a new specific code when the candidate represents a meaningful subset of the existing broader code
+- MERGE_TO_EXISTING: Combine into existing code, keeping its name/scope as primary
+- MERGE_TO_CANDIDATE: Combine into candidate code, adopting its name/scope as primary
+- CREATE_PARENT: Both codes become children under a broader parent category
 - CREATE_NEW: Keep codes separate when they represent distinct concepts
 - NO_ACTION: When existing code already adequately covers the candidate
 
@@ -164,7 +178,8 @@ Focus on:
 - Conceptual coherence and analytical value
 - Evidence distinctiveness and complementarity  
 - Maintaining clear boundaries between different phenomena
-- Identifying hierarchical relationships (general vs specific concepts)
+- Identifying when codes should be siblings under a broader category
+- Choosing the best primary code when merging (name quality, scope appropriateness)
 - Optimizing the codebook for downstream qualitative analysis"""
 
     def _get_default_prompt(self) -> str:

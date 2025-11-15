@@ -177,10 +177,15 @@ class ExplorationLayer:
                 evidence = defaultdict(list)
                 evidence[article["id"]] = code_data["evidence"]
 
+                # Validate and ensure name is never empty
+                code_name = code_data.get("name", "").strip()
+                if not code_name:
+                    code_name = f"Unnamed Code from Article {article['id']}"
+
                 # Create initial code without embedding
                 code = Code(
                     code_id=None,  # Will be assigned when added to codebook
-                    name=code_data["name"],
+                    name=code_name,
                     function=Function[code_data["function"]],
                     evidence=evidence,
                     embedding=None,  # Will be added next
@@ -405,22 +410,42 @@ class ExplorationLayer:
 
             if not similar_codes:
                 # New code - create operation to add it
-                operation = Operation(
-                    operation_type=OperationType.CREATE_CODE,
-                    new_code_data={
-                        "code_id": None,
-                        "name": candidate.name,
-                        "function": candidate.function,
-                        "evidence": candidate.evidence,
-                        "embedding": candidate.embedding,
-                        "created_at": candidate.created_at,
-                        "updated_at": candidate.updated_at,
-                        "parent_code_id": candidate.parent_code_id,
-                    },
-                    confidence=0.9,
-                    reasoning="New code not found in existing codebook",
-                )
-                operations.append(operation)
+                # Prevent creating a root-level code with no evidence
+                try:
+                    candidate_total_evidence = sum(
+                        len(v) for v in candidate.evidence.values()
+                    )
+                except Exception:
+                    candidate_total_evidence = 0
+
+                if candidate_total_evidence == 0 and (candidate.parent_code_id is None):
+                    # Skip creating an empty root-level code
+                    self._log_step(
+                        "operation_skipped",
+                        {
+                            "candidate_index": i,
+                            "reason": "no_evidence_for_new_code",
+                            "candidate_name": candidate.name,
+                            "timestamp": datetime.now().isoformat(),
+                        },
+                    )
+                else:
+                    operation = Operation(
+                        operation_type=OperationType.CREATE_CODE,
+                        new_code_data={
+                            "code_id": None,
+                            "name": candidate.name,
+                            "function": candidate.function,
+                            "evidence": candidate.evidence,
+                            "embedding": candidate.embedding,
+                            "created_at": candidate.created_at,
+                            "updated_at": candidate.updated_at,
+                            "parent_code_id": candidate.parent_code_id,
+                        },
+                        confidence=0.9,
+                        reasoning="New code not found in existing codebook",
+                    )
+                    operations.append(operation)
 
                 # Log operation creation
                 self._log_step(
@@ -438,18 +463,22 @@ class ExplorationLayer:
                 most_similar = similar_codes[0]  # Take the first similar code
                 decision = self._llm_decide_operation(most_similar, candidate)
 
-                if decision["operation"] == "MERGE":
-                    # Merge by updating existing code with enhanced evidence
+                if decision["operation"] == "MERGE_TO_EXISTING":
+                    # Merge candidate into existing code (existing becomes primary)
                     merged_evidence = self._merge_evidence(
                         most_similar.evidence, candidate.evidence
                     )
-                    # Use new name from LLM decision if provided, otherwise keep original or add "(enhanced)"
+                    # Ensure we never have empty names
                     new_name = decision.get("new_name")
-                    if not new_name:
-                        new_name = f"{most_similar.name} (enhanced)"
+                    if not new_name or new_name.strip() == "":
+                        new_name = (
+                            most_similar.name
+                            if most_similar.name
+                            else f"Merged Code {most_similar.code_id}"
+                        )
 
                     operation = Operation(
-                        operation_type=OperationType.UPDATE_CODE,
+                        operation_type=OperationType.MERGE_TO_EXISTING,
                         target_code_id=most_similar.code_id,
                         new_code_data={
                             "evidence": merged_evidence,
@@ -460,25 +489,161 @@ class ExplorationLayer:
                         reasoning=f"LLM Decision: {decision['reasoning']}",
                     )
                     operations.append(operation)
-                elif decision["operation"] == "SPLIT":
-                    # Create new code for the subset while keeping the original
-                    operation = Operation(
-                        operation_type=OperationType.SPLIT_CODE,
+                elif decision["operation"] == "MERGE_TO_CANDIDATE":
+                    # Merge existing into candidate (candidate becomes primary)
+                    merged_evidence = self._merge_evidence(
+                        candidate.evidence, most_similar.evidence
+                    )
+                    # Ensure we never have empty names
+                    new_name = decision.get("new_name")
+                    if not new_name or new_name.strip() == "":
+                        new_name = (
+                            candidate.name
+                            if candidate.name
+                            else f"Candidate Code {datetime.now().strftime('%H%M%S')}"
+                        )
+
+                    # First create the candidate code (only if evidence exists)
+                    try:
+                        merged_total = sum(len(v) for v in merged_evidence.values())
+                    except Exception:
+                        merged_total = 0
+
+                    if merged_total == 0 and (candidate.parent_code_id is None):
+                        # Nothing meaningful to create; skip
+                        self._log_step(
+                            "operation_skipped",
+                            {
+                                "candidate_index": i,
+                                "reason": "no_evidence_for_merge_to_candidate",
+                                "candidate_name": candidate.name,
+                                "timestamp": datetime.now().isoformat(),
+                            },
+                        )
+                        # Instead of creating and deleting, do no action
+                        operations.append(
+                            Operation(
+                                operation_type=OperationType.NO_ACTION,
+                                target_code_id=most_similar.code_id,
+                                confidence=decision.get("confidence", 0.5),
+                                reasoning="Skipped MERGE_TO_CANDIDATE due to empty merged evidence",
+                            )
+                        )
+                    else:
+                        create_operation = Operation(
+                            operation_type=OperationType.CREATE_CODE,
+                            new_code_data={
+                                "code_id": None,
+                                "name": new_name,
+                                "function": candidate.function,
+                                "evidence": merged_evidence,
+                                "embedding": candidate.embedding,
+                                "created_at": candidate.created_at,
+                                "updated_at": datetime.utcnow(),
+                                "parent_code_id": candidate.parent_code_id,
+                            },
+                            confidence=decision["confidence"],
+                            reasoning=f"LLM Decision: Creating primary from candidate",
+                        )
+
+                    # Then delete the existing code (will be handled by codebook)
+                    delete_operation = Operation(
+                        operation_type=OperationType.DELETE_CODE,
                         target_code_id=most_similar.code_id,
+                        confidence=decision["confidence"],
+                        reasoning=f"LLM Decision: Removing existing after merge to candidate",
+                    )
+
+                    if "create_operation" in locals():
+                        operations.extend([create_operation, delete_operation])
+                    else:
+                        # only append delete if create was intentionally skipped? skip delete as well
+                        pass
+                elif decision["operation"] == "CREATE_PARENT":
+                    # Create parent code that encompasses both existing and candidate
+                    parent_name = decision.get("parent_name")
+                    if not parent_name or parent_name.strip() == "":
+                        existing_name = (
+                            most_similar.name if most_similar.name else "Existing Code"
+                        )
+                        candidate_name = (
+                            candidate.name if candidate.name else "New Code"
+                        )
+                        parent_name = f"Broader category encompassing {existing_name} and {candidate_name}"
+
+                    # First create the candidate code (only if it has evidence)
+                    try:
+                        candidate_total = sum(
+                            len(v) for v in candidate.evidence.values()
+                        )
+                    except Exception:
+                        candidate_total = 0
+
+                    if candidate_total == 0:
+                        # Skip creating parent structure if candidate has no evidence
+                        self._log_step(
+                            "operation_skipped",
+                            {
+                                "candidate_index": i,
+                                "reason": "no_evidence_for_candidate_parent_structure",
+                                "candidate_name": candidate.name,
+                                "timestamp": datetime.now().isoformat(),
+                            },
+                        )
+                    else:
+                        create_candidate_operation = Operation(
+                            operation_type=OperationType.CREATE_CODE,
+                            new_code_data={
+                                "code_id": None,
+                                "name": candidate.name,
+                                "function": candidate.function,
+                                "evidence": candidate.evidence,
+                                "embedding": candidate.embedding,
+                                "created_at": candidate.created_at,
+                                "updated_at": candidate.updated_at,
+                                "parent_code_id": None,  # Will be set after parent creation
+                            },
+                            confidence=decision["confidence"],
+                            reasoning=f"LLM Decision: Creating candidate for parent structure",
+                        )
+
+                    # Create a temporary parent code to generate embedding
+                    temp_parent_code = Code(
+                        code_id=None,
+                        name=parent_name,
+                        function=candidate.function,
+                        evidence=defaultdict(list),
+                        embedding=None,
+                        created_at=datetime.utcnow(),
+                        updated_at=datetime.utcnow(),
+                        parent_code_id=None,
+                    )
+
+                    # Generate embedding for parent code
+                    parent_with_embedding = self.agent.add_embedding(temp_parent_code)
+
+                    # Then create the parent code operation
+                    create_parent_operation = Operation(
+                        operation_type=OperationType.CREATE_PARENT,
+                        target_code_id=most_similar.code_id,
+                        source_code_id=None,  # Will reference candidate after it's created
                         new_code_data={
                             "code_id": None,
-                            "name": candidate.name,
-                            "function": candidate.function,
-                            "evidence": candidate.evidence,
-                            "embedding": candidate.embedding,
-                            "created_at": candidate.created_at,
-                            "updated_at": candidate.updated_at,
-                            "parent_code_id": most_similar.code_id,  # Link to original code
+                            "name": parent_name,
+                            "function": candidate.function,  # Same function as children
+                            "evidence": defaultdict(list),  # Start with empty evidence
+                            "embedding": parent_with_embedding.embedding,  # Use generated embedding
+                            "created_at": datetime.utcnow(),
+                            "updated_at": datetime.utcnow(),
+                            "parent_code_id": None,  # This IS the parent
                         },
                         confidence=decision["confidence"],
                         reasoning=f"LLM Decision: {decision['reasoning']}",
                     )
-                    operations.append(operation)
+
+                    operations.extend(
+                        [create_candidate_operation, create_parent_operation]
+                    )
                 elif decision["operation"] == "CREATE_NEW":
                     # Create new code despite similarity
                     operation = Operation(
@@ -728,13 +893,13 @@ class ExplorationLayer:
 
         if similarity > 0.7:
             return {
-                "operation": "MERGE",
+                "operation": "MERGE_TO_EXISTING",
                 "confidence": 0.7,
                 "reasoning": f"High name similarity ({similarity:.2f}) - likely same concept",
             }
         elif similarity > 0.4:
             return {
-                "operation": "MERGE",
+                "operation": "MERGE_TO_EXISTING",
                 "confidence": 0.6,
                 "reasoning": f"Moderate similarity ({similarity:.2f}) - merge with existing evidence",
             }
@@ -782,6 +947,9 @@ class ExplorationLayer:
         successful_operations = 0
         failed_operations = 0
 
+        # Handle multi-step operations that need coordination
+        candidate_code_id = None  # Track newly created candidate codes
+
         for i, operation in enumerate(operations):
             operation_start_time = datetime.now().isoformat()
 
@@ -799,6 +967,42 @@ class ExplorationLayer:
             )
 
             success = self.current_codebook.execute_operation(operation)
+
+            # Track newly created codes for multi-step operations
+            if (
+                success
+                and operation.operation_type == OperationType.CREATE_CODE
+                and operation.new_code_data
+            ):
+                # Find the newly created code (it will have the highest ID)
+                max_id = (
+                    max(self.current_codebook.codes.keys())
+                    if self.current_codebook.codes
+                    else 0
+                )
+                candidate_code_id = max_id
+
+            # Handle delayed parent-child linking for CREATE_PARENT operations
+            if (
+                success
+                and operation.operation_type == OperationType.CREATE_PARENT
+                and candidate_code_id is not None
+            ):
+                # Link the recently created candidate to the parent that was just created
+                parent_id = max(
+                    self.current_codebook.codes.keys()
+                )  # Most recently created parent
+                if (
+                    candidate_code_id in self.current_codebook.codes
+                    and parent_id in self.current_codebook.codes
+                ):
+                    candidate_code = self.current_codebook.codes[candidate_code_id]
+                    candidate_code.parent_code_id = parent_id
+                    candidate_code.updated_at = datetime.utcnow()
+                    print(f"Linked candidate {candidate_code_id} to parent {parent_id}")
+
+                # Reset candidate tracking for next operations
+                candidate_code_id = None
 
             if success:
                 successful_operations += 1

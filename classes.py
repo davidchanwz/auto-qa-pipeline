@@ -67,9 +67,10 @@ class ResearchFramework:
 
 class OperationType(Enum):
     CREATE_CODE = "CREATE_CODE"
-    MERGE_CODES = "MERGE_CODES"
-    UPDATE_CODE = "UPDATE_CODE"
-    SPLIT_CODE = "SPLIT_CODE"
+    DELETE_CODE = "DELETE_CODE"
+    MERGE_TO_EXISTING = "MERGE_TO_EXISTING"
+    MERGE_TO_CANDIDATE = "MERGE_TO_CANDIDATE"
+    CREATE_PARENT = "CREATE_PARENT"
     NO_ACTION = "NO_ACTION"
 
 
@@ -99,6 +100,12 @@ class Code:
     updated_at: datetime = datetime.utcnow()
     parent_code_id: int = None
 
+    def __post_init__(self):
+        """Validate code properties after initialization."""
+        # Ensure name is never empty
+        if not self.name or str(self.name).strip() == "":
+            self.name = f"Code {self.code_id}" if self.code_id else "Unnamed Code"
+
 
 class Codebook:
     def __init__(self):
@@ -120,6 +127,34 @@ class Codebook:
             del self.codes[code_id]
             return True
         return False
+
+    def _bubble_evidence_to_parent(self, child_code: Code) -> None:
+        """Bubble evidence from a child code up to its parent."""
+        if child_code.parent_code_id and child_code.parent_code_id in self.codes:
+            parent_code = self.codes[child_code.parent_code_id]
+
+            # Use deduplicating helper to add evidence
+            self._add_evidence_to_parent(parent_code, child_code.evidence)
+
+    def _add_evidence_to_parent(
+        self, parent_code: Code, evidence: Dict[Any, List[str]]
+    ) -> None:
+        """Add evidence to a parent code, avoiding duplicate quotes.
+
+        Args:
+            parent_code: the parent Code object to receive evidence
+            evidence: mapping of article_id -> list of quote strings
+        """
+        for article_id, quotes in evidence.items():
+            # use a set to avoid duplicates while preserving existing list order
+            existing = parent_code.evidence.get(article_id, [])
+            existing_set = set(existing)
+            for quote in quotes:
+                if quote not in existing_set:
+                    parent_code.evidence[article_id].append(quote)
+                    existing_set.add(quote)
+
+        parent_code.updated_at = datetime.utcnow()
 
     def merge_codes(self, code1_id: int, code2_id: int) -> Optional[Code]:
         """Merge two codes into one, combining their evidence."""
@@ -366,37 +401,107 @@ class Codebook:
         """Execute an operation on the codebook."""
         if operation.operation_type == OperationType.CREATE_CODE:
             if operation.new_code_data:
+                # Prevent creation of root-level codes that have no evidence
+                evidence = operation.new_code_data.get("evidence")
+                parent_id = operation.new_code_data.get("parent_code_id")
+                total_evidence = 0
+                if evidence:
+                    try:
+                        total_evidence = sum(len(v) for v in evidence.values())
+                    except Exception:
+                        # If evidence is not in expected format, treat as zero
+                        total_evidence = 0
+
+                if total_evidence == 0 and (parent_id is None):
+                    # Do not allow adding an orphan code with no evidence
+                    print(
+                        "Skipped creating root-level code with no evidence (operation blocked)."
+                    )
+                    return False
+
                 code = Code(**operation.new_code_data)
                 self.add_code(code)
+
+                # Bubble evidence up to parent after creating code
+                self._bubble_evidence_to_parent(code)
                 return True
-        elif operation.operation_type == OperationType.MERGE_CODES:
-            if operation.target_code_id and operation.source_code_id:
-                result = self.merge_codes(
-                    operation.target_code_id, operation.source_code_id
-                )
-                return result is not None
-        elif operation.operation_type == OperationType.UPDATE_CODE:
+        elif operation.operation_type == OperationType.DELETE_CODE:
+            if operation.target_code_id:
+                return self.delete_code(operation.target_code_id)
+        elif operation.operation_type == OperationType.MERGE_TO_EXISTING:
             if operation.target_code_id and operation.target_code_id in self.codes:
                 code = self.codes[operation.target_code_id]
                 if operation.new_code_data:
                     for key, value in operation.new_code_data.items():
                         if hasattr(code, key):
+                            # Special handling for name to prevent empty names
+                            if key == "name" and (
+                                not value or str(value).strip() == ""
+                            ):
+                                value = f"Code {code.code_id}"
                             setattr(code, key, value)
                 code.updated_at = datetime.utcnow()
+
+                # Bubble evidence up to parent after merge
+                self._bubble_evidence_to_parent(code)
                 return True
-        elif operation.operation_type == OperationType.SPLIT_CODE:
+        elif operation.operation_type == OperationType.MERGE_TO_CANDIDATE:
+            # This should be handled by CREATE_CODE + DELETE_CODE operations
+            # Not executed directly
+            return True
+        elif operation.operation_type == OperationType.CREATE_PARENT:
             if (
                 operation.target_code_id
                 and operation.target_code_id in self.codes
                 and operation.new_code_data
             ):
-                # Create a new code from the subset data
-                new_code = Code(**operation.new_code_data)
-                self.add_code(new_code)
+                # Prepare parent data
+                parent_name = operation.new_code_data.get("name", "")
 
-                # Note: The original code remains unchanged in a SPLIT operation
-                # This allows both the original broader code and the new specific subset to coexist
-                # If evidence needs to be redistributed, that should be handled by the calling logic
+                # Get the existing code and its original parent
+                existing_code = self.codes[operation.target_code_id]
+                original_parent_id = existing_code.parent_code_id
+
+                # If a parent with the same name already exists under the same original parent,
+                # reuse it instead of creating a duplicate.
+                parent_code = None
+                for code in self.codes.values():
+                    if (
+                        code.name.strip().lower() == str(parent_name).strip().lower()
+                        and code.parent_code_id == original_parent_id
+                    ):
+                        parent_code = code
+                        break
+
+                if parent_code is None:
+                    # Create the parent code and insert it under the original parent
+                    parent_code = Code(**operation.new_code_data)
+                    if original_parent_id is not None:
+                        parent_code.parent_code_id = original_parent_id
+                    else:
+                        parent_code.parent_code_id = None
+                    self.add_code(parent_code)
+
+                # Move existing code to new parent
+                existing_code.parent_code_id = parent_code.code_id
+                existing_code.updated_at = datetime.utcnow()
+
+                # If source_code_id is provided, update that code too
+                # This will be set after the candidate code is created
+                if operation.source_code_id and operation.source_code_id in self.codes:
+                    source_code = self.codes[operation.source_code_id]
+                    source_code.parent_code_id = parent_code.code_id
+                    source_code.updated_at = datetime.utcnow()
+
+                    # Aggregate evidence from source code into parent (avoid duplicates)
+                    self._add_evidence_to_parent(parent_code, source_code.evidence)
+
+                # Aggregate evidence from existing code into parent (avoid duplicates)
+                self._add_evidence_to_parent(parent_code, existing_code.evidence)
+
+                # Update parent timestamps
+                parent_code.updated_at = datetime.utcnow()
+
                 return True
         elif operation.operation_type == OperationType.NO_ACTION:
             return True
@@ -421,3 +526,25 @@ class Codebook:
             ),
             "next_available_id": self._next_id,
         }
+
+    def remove_orphan_codes(self) -> List[int]:
+        """Remove codes that have no evidence and no children (orphans).
+
+        Returns a list of removed code IDs.
+        """
+        orphan_ids = []
+
+        # Find codes with no evidence
+        for code_id, code in list(self.codes.items()):
+            evidence_count = (
+                sum(len(v) for v in code.evidence.values()) if code.evidence else 0
+            )
+            # Check if any codes have this as parent
+            has_children = any(c.parent_code_id == code_id for c in self.codes.values())
+            if evidence_count == 0 and not has_children:
+                orphan_ids.append(code_id)
+
+        for oid in orphan_ids:
+            del self.codes[oid]
+
+        return orphan_ids

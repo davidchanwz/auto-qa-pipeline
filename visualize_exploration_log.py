@@ -36,14 +36,14 @@ def analyze_log_structure(steps: List[Dict[str, Any]]) -> Dict[str, Any]:
         "codes_generated": 0,
         "operations_performed": 0,
         "decisions_made": 0,
-        "errors": 0
+        "errors": 0,
     }
-    
+
     # Count step types and extract key metrics
     for step in steps:
         step_type = step.get("step_type", "unknown")
         stats["step_types"][step_type] = stats["step_types"].get(step_type, 0) + 1
-        
+
         # Extract specific metrics
         if step_type == "article_analysis_start":
             stats["articles_processed"] += 1
@@ -55,27 +55,58 @@ def analyze_log_structure(steps: List[Dict[str, Any]]) -> Dict[str, Any]:
             stats["decisions_made"] += 1
         elif "error" in step_type.lower():
             stats["errors"] += 1
-    
+
     return stats
 
 
 def get_step_category(step_type: str) -> str:
     """Categorize step types for better organization."""
     categories = {
-        "session": ["session_start", "incremental_analysis_start", "incremental_analysis_complete"],
-        "article": ["article_analysis_start", "article_analysis_complete", "incremental_article_start", 
-                   "incremental_article_complete", "incremental_article_no_operations", "incremental_article_no_codes"],
-        "prompt": ["prompt_generated", "context_set", "llm_response_received", "fallback_method_used"],
+        "session": [
+            "session_start",
+            "incremental_analysis_start",
+            "incremental_analysis_complete",
+        ],
+        "article": [
+            "article_analysis_start",
+            "article_analysis_complete",
+            "incremental_article_start",
+            "incremental_article_complete",
+            "incremental_article_no_operations",
+            "incremental_article_no_codes",
+        ],
+        "prompt": [
+            "prompt_generated",
+            "context_set",
+            "llm_response_received",
+            "fallback_method_used",
+        ],
         "code": ["code_created", "candidate_processing"],
         "similarity": ["similarity_search"],
-        "decision": ["decision_context_set", "decision_prompt_generated", "llm_decision_start", 
-                    "llm_decision_complete", "decision_fallback_used", "decision_error"],
-        "operation": ["operation_created", "operation_attempt", "operation_success", "operation_failure"],
+        "decision": [
+            "decision_context_set",
+            "decision_prompt_generated",
+            "llm_decision_start",
+            "llm_decision_complete",
+            "decision_fallback_used",
+            "decision_error",
+        ],
+        "operation": [
+            "operation_created",
+            "operation_attempt",
+            "operation_success",
+            "operation_failure",
+        ],
         "comparison": ["comparison_start", "comparison_complete"],
-        "codebook": ["codebook_update_start", "codebook_update_complete", "codebook_save_start", "codebook_save_success"],
-        "update": ["incremental_update_start"]
+        "codebook": [
+            "codebook_update_start",
+            "codebook_update_complete",
+            "codebook_save_start",
+            "codebook_save_success",
+        ],
+        "update": ["incremental_update_start"],
     }
-    
+
     for category, types in categories.items():
         if step_type in types:
             return category
@@ -95,7 +126,7 @@ def get_step_icon(step_type: str) -> str:
         "comparison": "⚖️",
         "codebook": "📚",
         "update": "🔄",
-        "other": "📝"
+        "other": "📝",
     }
     category = get_step_category(step_type)
     return icons.get(category, "📝")
@@ -105,14 +136,14 @@ def format_step_data(data: Dict[str, Any]) -> str:
     """Format step data for display."""
     if not data:
         return "<em>No additional data</em>"
-    
+
     # Special formatting for common data types
     formatted_items = []
-    
+
     for key, value in data.items():
         if key == "timestamp":
             continue  # Skip timestamp as it's shown separately
-        
+
         if isinstance(value, dict):
             value_str = json.dumps(value, indent=2)[:500]
             if len(json.dumps(value)) > 500:
@@ -121,24 +152,28 @@ def format_step_data(data: Dict[str, Any]) -> str:
             if len(value) <= 5:
                 value_str = ", ".join(str(v) for v in value)
             else:
-                value_str = f"{', '.join(str(v) for v in value[:5])}... ({len(value)} total)"
+                value_str = (
+                    f"{', '.join(str(v) for v in value[:5])}... ({len(value)} total)"
+                )
         else:
             value_str = str(value)
-        
+
         # Highlight important fields
         if key in ["article_id", "code_name", "operation_type", "decision", "error"]:
-            formatted_items.append(f"<strong>{key}:</strong> <span class='highlight'>{value_str}</span>")
+            formatted_items.append(
+                f"<strong>{key}:</strong> <span class='highlight'>{value_str}</span>"
+            )
         else:
             formatted_items.append(f"<strong>{key}:</strong> {value_str}")
-    
+
     return "<br>".join(formatted_items)
 
 
 def generate_html_visualization(log_data: Dict[str, Any], stats: Dict[str, Any]) -> str:
     """Generate interactive HTML visualization."""
-    
+
     steps = log_data.get("steps", [])
-    
+
     # Group steps by category for filtering
     steps_by_category = {}
     for step in steps:
@@ -146,7 +181,7 @@ def generate_html_visualization(log_data: Dict[str, Any], stats: Dict[str, Any])
         if category not in steps_by_category:
             steps_by_category[category] = []
         steps_by_category[category].append(step)
-    
+
     html = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -549,25 +584,25 @@ def generate_html_visualization(log_data: Dict[str, Any], stats: Dict[str, Any])
             
             <div class="timeline" id="timeline">
     """
-    
+
     # Generate timeline items
     for i, step in enumerate(steps):
         step_type = step.get("step_type", "unknown")
         timestamp = step.get("timestamp", "")
         data = step.get("data", {})
-        
+
         category = get_step_category(step_type)
         icon = get_step_icon(step_type)
-        
+
         # Format timestamp
         try:
-            dt = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+            dt = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
             formatted_time = dt.strftime("%H:%M:%S.%f")[:-3]  # Show milliseconds
         except:
             formatted_time = timestamp
-        
+
         formatted_data = format_step_data(data)
-        
+
         html += f"""
                 <div class="step-item category-{category}" data-category="{category}" data-step-type="{step_type}">
                     <div class="step-header" onclick="toggleStep(this)">
@@ -588,7 +623,7 @@ def generate_html_visualization(log_data: Dict[str, Any], stats: Dict[str, Any])
                     </div>
                 </div>
         """
-    
+
     html += f"""
             </div>
         </div>
@@ -674,27 +709,27 @@ def generate_html_visualization(log_data: Dict[str, Any], stats: Dict[str, Any])
 </body>
 </html>
     """
-    
+
     return html
 
 
 def create_exploration_log_visualization(log_path: str, output_path: str = None) -> str:
     """Main function to create exploration log visualization."""
-    
+
     # Load log data
     log_data = load_exploration_log(log_path)
     if not log_data:
         return None
-    
+
     steps = log_data.get("steps", [])
     if not steps:
         print("No steps found in log file")
         return None
-    
+
     # Analyze log structure
     print("Analyzing log structure...")
     stats = analyze_log_structure(steps)
-    
+
     # Print summary to console
     print(f"\n📊 Log Analysis Summary:")
     print(f"Total steps: {stats['total_steps']}")
@@ -703,16 +738,16 @@ def create_exploration_log_visualization(log_path: str, output_path: str = None)
     print(f"Operations performed: {stats['operations_performed']}")
     print(f"LLM decisions made: {stats['decisions_made']}")
     print(f"Errors encountered: {stats['errors']}")
-    
+
     print(f"\n📈 Top step types:")
-    sorted_steps = sorted(stats['step_types'].items(), key=lambda x: x[1], reverse=True)
+    sorted_steps = sorted(stats["step_types"].items(), key=lambda x: x[1], reverse=True)
     for step_type, count in sorted_steps[:10]:
         print(f"  {step_type}: {count}")
-    
+
     # Generate HTML
     print("Generating HTML visualization...")
     html_content = generate_html_visualization(log_data, stats)
-    
+
     # Save to file
     if not output_path:
         # Extract session ID from log path if possible
@@ -720,10 +755,10 @@ def create_exploration_log_visualization(log_path: str, output_path: str = None)
         if "exploration_session_" in log_path:
             session_id = log_path.split("exploration_session_")[1].split(".")[0]
         output_path = f"exploration_log_visualization_{session_id}.html"
-    
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_content)
-    
+
     print(f"✅ Exploration log visualization saved to: {output_path}")
     return output_path
 
@@ -731,10 +766,10 @@ def create_exploration_log_visualization(log_path: str, output_path: str = None)
 if __name__ == "__main__":
     import sys
     import glob
-    
+
     # Find most recent log file if no specific file provided
     log_path = None
-    
+
     if len(sys.argv) > 1:
         log_path = sys.argv[1]
     else:
@@ -746,11 +781,13 @@ if __name__ == "__main__":
         else:
             print("No exploration log files found in logs/ directory")
             sys.exit(1)
-    
+
     if os.path.exists(log_path):
         output_file = create_exploration_log_visualization(log_path)
         if output_file:
-            print(f"\n🌐 Open the file in your browser to view the interactive exploration log!")
+            print(
+                f"\n🌐 Open the file in your browser to view the interactive exploration log!"
+            )
     else:
         print(f"❌ Log file not found: {log_path}")
         print("Usage: python visualize_exploration_log.py [path_to_log.json]")
